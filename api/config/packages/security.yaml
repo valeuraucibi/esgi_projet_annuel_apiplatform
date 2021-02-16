@@ -60,8 +60,10 @@ security:
         - { path: ^/categories, roles: IS_AUTHENTICATED_FULLY,
             methods: [POST, PUT, DELETE ]
           }
-        - { path: ^/cards, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/orders, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/comments, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/messages, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/bookmarks, roles: IS_AUTHENTICATED_FULLY }
         - {
             path: ^/users, #roles: IS_AUTHENTICATED_ANONYMOUSLY
             roles: IS_AUTHENTICATED_FULLY,
