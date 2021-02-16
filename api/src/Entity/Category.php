@@ -7,7 +7,16 @@ use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      collectionOperations={
+ *          "get"={},
+ *          "post"={}
+ *     },
+ *     itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  */
 class Category
