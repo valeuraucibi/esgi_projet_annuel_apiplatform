@@ -35,7 +35,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class User implements UserInterface
 {
     /**
-     * @Groups({ "product_read" , "comment_read", "user_read", "product_subresource", "comment_subresource"})
+     * @Groups({ "product_read" , "comment_read", "bookmark_read", "message_read", "order_read", "user_read", "product_subresource", "comment_subresource"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -43,7 +43,7 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @Groups({ "product_read" ,"comment_read", "user_read", "product_subresource", "comment_subresource",
+     * @Groups({ "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "user_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
      * @ORM\Column(type="string", length=180, unique=true)
@@ -69,7 +69,7 @@ class User implements UserInterface
 
     /**
      * @Groups({
-     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read","product_subresource", "comment_subresource",
      *     "user_write",
      * })
      * @ORM\Column(type="string", length=150)
@@ -80,7 +80,7 @@ class User implements UserInterface
 
     /**
      * @Groups({
-     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
      * @ORM\Column(type="string", length=150)
@@ -91,7 +91,7 @@ class User implements UserInterface
 
     /**
      * @Groups({
-     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
      * @ORM\Column(type="string", length=50, nullable=true)
@@ -100,7 +100,7 @@ class User implements UserInterface
 
     /**
      * @Groups({
-     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -109,7 +109,7 @@ class User implements UserInterface
 
     /**
      * @Groups({
-     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -118,7 +118,7 @@ class User implements UserInterface
 
     /**
      * @Groups({
-     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
      * @ORM\Column(type="date", nullable=true)
@@ -127,7 +127,7 @@ class User implements UserInterface
 
     /**
      * @Groups({
-     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -136,7 +136,7 @@ class User implements UserInterface
 
     /**
      * @Groups({
-     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -145,7 +145,7 @@ class User implements UserInterface
 
     /**
      * @Groups({
-     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
      * @ORM\Column(type="boolean")

@@ -87,6 +87,8 @@ class Comment
      */
     private $updatedAt;
 
+    // END GEDMO
+
     public function getId(): ?int
     {
         return $this->id;

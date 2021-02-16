@@ -47,7 +47,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Product
 {
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "product_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -55,7 +55,7 @@ class Product
     private $id;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "product_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le nom est obligatoire")
      * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères", max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
@@ -63,13 +63,13 @@ class Product
     private $name;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "product_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "product_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="Le prix est obligatoire")
      * @Assert\Type(type="float", message="List price must be a numeric value")
@@ -91,7 +91,7 @@ class Product
     private $category;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "product_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $image;
@@ -113,7 +113,7 @@ class Product
 
     /**
      * @var \DateTime $createdAt
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read"})
+     * @Groups({"product_read" ,"category_read" ,"user_read" , "bookmark_read", "comment_read"})
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
@@ -121,7 +121,7 @@ class Product
 
     /**
      * @var \DateTime $updatedAt
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read"})
+     * @Groups({"product_read" ,"category_read" ,"user_read", "bookmark_read", "comment_read"})
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */

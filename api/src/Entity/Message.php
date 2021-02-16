@@ -13,12 +13,26 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"message_read"}},
+ *     denormalizationContext={"groups"={"message_write"}},
+ *     paginationItemsPerPage=20,
+ *     collectionOperations={
+ *          "get"={},
+ *          "post"={}
+ *     },
+ *     itemOperations={
+ *          "get"={},
+ *          "delete"={},
+ *          "put"={},
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=MessageRepository::class)
  */
 class Message
 {
     /**
+     * @Groups({"message_read","user_read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -26,20 +40,29 @@ class Message
     private $id;
 
     /**
+     * @Groups({"message_read", "message_write"})
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
     /**
+     * @Groups({"message_read", "message_write", "user_read"})
      * @ORM\Column(type="string", length=255)
      */
     private $subject;
 
     /**
+     * @Groups({"message_read", "message_write", "user_read"})
      * @ORM\Column(type="string", length=255)
      */
     private $content;
+
+     /**
+     * @Groups({"message_read", "message_write", "user_read"})
+     * @ORM\Column(type="string", length=100)
+     */
+    private $status;
 
      // GEDMO
 
@@ -59,10 +82,7 @@ class Message
 
     // END GEDMO
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $status;
+   
 
     public function getId(): ?int
     {
