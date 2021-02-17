@@ -2,6 +2,7 @@
     "require": {
         "roave/better-reflection": "^4.12",
         "symfony/validator": "^5.2",
-        "doctrine/annotations": "^1.11"
+        "doctrine/annotations": "^1.11",
+        "symfony/apache-pack": "^1.0"
     }
 }

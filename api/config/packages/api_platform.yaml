@@ -20,3 +20,13 @@ api_platform:
             items_per_page: 5
             client_enabled: true
             client_items_per_page: true
+            
+    # http_cache:
+    #     -   invalidation:
+    #         -   enabled: true
+    #         -   varnish_urls: ['%env(VARNISH_URL)%']
+    #     -   max_age: 0
+    #     -   shared_max_age: 3600
+    #     -   vary: ['Content-Type', 'Authorization', 'Origin']
+    #     -   public: true
+    
