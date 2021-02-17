@@ -2,19 +2,40 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+* @ApiResource(
+ *     normalizationContext={"groups"={"user_read"}},
+ *     denormalizationContext={"groups"={"user_write"}},
+ *     paginationItemsPerPage=20,
+ *     collectionOperations={
+ *          "get"={},
+ *          "post"={}
+ *     },
+ *     itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={},
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @UniqueEntity("email", message="Un utilisateur ayant cette adresse email existe déjà")
  */
 class User implements UserInterface
 {
     /**
+     * @Groups({ "product_read" , "comment_read", "user_read", "product_subresource", "comment_subresource"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -22,7 +43,12 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @Groups({ "product_read" ,"comment_read", "user_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="L'email doit être renseigné !")
+     * @Assert\Email(message="L'adresse email doit avoir un format valide !")
      */
     private $email;
 
@@ -32,90 +58,159 @@ class User implements UserInterface
     private $roles = [];
 
     /**
+     * @Groups({
+     *     "user_write",
+     * })
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Le mot de passe est obligatoire")
      */
     private $password;
 
     /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
      * @ORM\Column(type="string", length=150)
+     * @Assert\NotBlank(message="Le nom de famille est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom de famille doit faire entre 3 et 255 caractères", max=255, maxMessage="Le nom de famille doit faire entre 3 et 255 caractères")
      */
     private $lastName;
 
     /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
      * @ORM\Column(type="string", length=150)
+     * @Assert\NotBlank(message="Le prénom est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le prénom doit faire entre 3 et 255 caractères", max=255, maxMessage="Le prénom doit faire entre 3 et 255 caractères")
      */
     private $firstName;
 
     /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $phone;
 
     /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $address;
 
     /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
      * @ORM\Column(type="date", nullable=true)
      */
     private $birthdate;
 
     /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $siren;
 
     /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $companyName;
 
     /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read" ,"user_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
      * @ORM\Column(type="boolean")
      */
     private $accountStatus;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
-
-    /**
+     * 
+     * @Groups({
+     *     "user_read"
+     * })
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="user_id")
      */
     private $products;
 
     /**
+     * @Groups({
+     *     "user_read"
+     * })
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="author")
      */
     private $comments;
 
     /**
+     * @Groups({
+     *     "user_read"
+     * })
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author")
      */
     private $messages;
 
     /**
+     * @Groups({
+     *     "user_read"
+     * })
      * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="user_id")
      */
     private $bookmarks;
 
     /**
+     * @Groups({
+     *     "user_read"
+     * })
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="customer")
      */
     private $orders;
+
+     // GEDMO
+
+    /**
+     * @var \DateTime $createdAt
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime $updatedAt
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    // END GEDMO
 
     public function __construct()
     {

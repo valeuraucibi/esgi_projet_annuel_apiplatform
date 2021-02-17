@@ -8,13 +8,35 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"category_read"}},
+ *     denormalizationContext={"groups"={"category_write"}},
+ *     paginationItemsPerPage=20,
+ *     collectionOperations={
+ *          "get"={},
+ *          "post"={}
+ *     },
+ *     itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={},
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @UniqueEntity("name", message="Cette catégorie existe déjà")
  */
 class Category
 {
     /**
+     * @Groups({"category_read","product_read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -22,24 +44,39 @@ class Category
     private $id;
 
     /**
+     *
+     * @Groups({"category_read", "category_write", "product_read"})
      * @ORM\Column(type="string", length=150)
+     * @Assert\NotBlank(message="Le nom de la catégorie est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom de la catégorie doit faire entre 3 et 255 caractères", max=255, maxMessage="Le nom de la catégorie doit faire entre 3 et 255 caractères")
      */
     private $name;
 
     /**
+     * @Groups({"category_read", "category_write", "product_read"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
 
+      // GEDMO
+
     /**
-     * @ORM\Column(type="datetime")
+     * @var \DateTime $createdAt
+     * @Groups({"comment_read" ,"product_read" ,"user_read" ,"comment_subresource"})
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
     private $createdAt;
 
     /**
+     * @var \DateTime $updatedAt
+     * @Groups({"comment_read" , "product_read" , "user_read" , "comment_subresource"})
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
+    // END GEDMO
 
     /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")

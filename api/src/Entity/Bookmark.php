@@ -6,6 +6,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BookmarkRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=BookmarkRepository::class)
@@ -31,15 +37,23 @@ class Bookmark
      */
     private $user_id;
 
+     // GEDMO
+
     /**
-     * @ORM\Column(type="datetime")
+     * @var \DateTime $createdAt
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
     private $createdAt;
 
     /**
+     * @var \DateTime $updatedAt
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
+    // END GEDMO
 
     public function getId(): ?int
     {
