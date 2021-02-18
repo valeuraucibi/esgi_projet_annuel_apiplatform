@@ -203,6 +203,16 @@ class AppFixtures extends Fixture
             $manager->persist($order);
             $orders[] = $order;
         }
+         // Gestion des Bookmark
+         for($l = 1; $l <=20; $l++){
+            $customerBookmark   = $customers[mt_rand(0, count($customers) - 1)];
+            $productBookmark   = $products[mt_rand(0, count($products) - 1)];
+            $bookmark = new Bookmark();
+            $bookmark->setProduct($productBookmark)
+                ->setUserId($customerBookmark);
+
+            $manager->persist($bookmark);
+        }
 
         
         $manager->flush();
