@@ -121,18 +121,11 @@ class User implements UserInterface
      *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $birthdate;
+    private $birthdate;   
 
-    /**
-     * @Groups({
-     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
-     *     "user_write",
-     * })
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $siren;
+    
 
     /**
      * @Groups({
@@ -148,7 +141,7 @@ class User implements UserInterface
      *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=100)
      */
     private $accountStatus;
 
@@ -177,6 +170,16 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author")
      */
     private $messages;
+
+
+    /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $siren;
 
     /**
      * @Groups({
@@ -209,6 +212,7 @@ class User implements UserInterface
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
 
     // END GEDMO
 
@@ -362,29 +366,9 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBirthdate(): ?\DateTimeInterface
-    {
-        return $this->birthdate;
-    }
+    
 
-    public function setBirthdate(?\DateTimeInterface $birthdate): self
-    {
-        $this->birthdate = $birthdate;
-
-        return $this;
-    }
-
-    public function getSiren(): ?string
-    {
-        return $this->siren;
-    }
-
-    public function setSiren(?string $siren): self
-    {
-        $this->siren = $siren;
-
-        return $this;
-    }
+   
 
     public function getCompanyName(): ?string
     {
@@ -398,17 +382,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAccountStatus(): ?bool
-    {
-        return $this->accountStatus;
-    }
-
-    public function setAccountStatus(bool $accountStatus): self
-    {
-        $this->accountStatus = $accountStatus;
-
-        return $this;
-    }
+    
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
@@ -583,4 +557,44 @@ class User implements UserInterface
 
         return $this;
     }
+
+
+
+    public function getBirthdate(): ?\DateTimeInterface
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(?\DateTimeInterface $birthdate): self
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    public function getSiren(): ?string
+    {
+        return $this->siren;
+    }
+
+    public function setSiren(?string $siren): self
+    {
+        $this->siren = $siren;
+
+        return $this;
+    }
+
+    public function getAccountStatus(): ?string
+    {
+        return $this->accountStatus;
+    }
+
+    public function setAccountStatus(string $accountStatus): self
+    {
+        $this->accountStatus = $accountStatus;
+
+        return $this;
+    }
+
+
 }

@@ -52,11 +52,12 @@ class Category
      */
     private $name;
 
-    /**
+     /**
      * @Groups({"category_read", "category_write", "product_read"})
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
+   
 
       // GEDMO
 
@@ -82,7 +83,6 @@ class Category
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
      */
     private $products;
-
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -105,17 +105,7 @@ class Category
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
+   
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
@@ -167,6 +157,18 @@ class Category
                 $product->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

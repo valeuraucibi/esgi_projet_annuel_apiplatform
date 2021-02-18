@@ -54,7 +54,7 @@ class Message
 
     /**
      * @Groups({"message_read", "message_write", "user_read"})
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $content;
 

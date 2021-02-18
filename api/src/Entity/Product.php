@@ -64,7 +64,7 @@ class Product
 
     /**
      * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
@@ -109,6 +109,12 @@ class Product
      */
     private $bookmarks;
 
+    /**
+     * @Groups({"product_read"})
+     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="products")
+     */
+    private $orders;
+
      // GEDMO
 
     /**
@@ -127,12 +133,14 @@ class Product
      */
     private $updatedAt;
 
+
     // END GEDMO
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -292,6 +300,33 @@ class Product
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            $order->removeProduct($this);
+        }
 
         return $this;
     }
