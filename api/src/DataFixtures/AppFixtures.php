@@ -214,7 +214,6 @@ class AppFixtures extends Fixture
             $manager->persist($bookmark);
         }
 
-        
         $manager->flush();
     }
 }
