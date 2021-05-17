@@ -29,6 +29,7 @@ class AppFixtures extends Fixture
     {
 
         $faker = Factory::create('fr_FR');
+        $faker->addProvider(new \Mmo\Faker\PicsumProvider($faker));
 
         //$contentChanged   = $faker->dateTime('now');
         //->setContentChanged($contentChanged)
@@ -171,13 +172,17 @@ class AppFixtures extends Fixture
                // $order = $orders[mt_rand(0, count($orders) -1)];
         
                 $product->setName($name)
-                ->setImage($image)
+                ->setImage($faker->picsumUrl(829, 679))
                 //->setReference($faker->isbn13()) 
-                ->setDescription($description)
+                ->setBrand($faker->jobTitle($nbWords = 15, $variableNbWords = true))
+                ->setDescription($faker->paragraph(4))
                 ->setPrice(mt_rand(40, 200))
                 ->setUserId($userSeller)
                 ->setCategory($category)
                 ->addOrder($order)
+                ->setRating(mt_rand(1, 5))
+                ->setNumReviews(mt_rand(8, 21))
+                ->setCountInStock(mt_rand(0, 25))
                 ;
             
                     // Gestion des commentaires

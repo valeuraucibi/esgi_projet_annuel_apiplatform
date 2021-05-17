@@ -191,6 +191,9 @@
             "config/packages/lexik_jwt_authentication.yaml"
         ]
     },
+    "mmo/faker-images": {
+        "version": "v0.3.0"
+    },
     "monolog/monolog": {
         "version": "2.1.1"
     },

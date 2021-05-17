@@ -133,6 +133,30 @@ class Product
      */
     private $updatedAt;
 
+    /**
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
+     * @ORM\Column(type="float")
+     */
+    private $countInStock;
+
+    /**
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $brand;
+
+    /**
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $rating;
+
+    /**
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $numReviews;
+
 
     // END GEDMO
 
@@ -327,6 +351,54 @@ class Product
         if ($this->orders->removeElement($order)) {
             $order->removeProduct($this);
         }
+
+        return $this;
+    }
+
+    public function getCountInStock(): ?float
+    {
+        return $this->countInStock;
+    }
+
+    public function setCountInStock(float $countInStock): self
+    {
+        $this->countInStock = $countInStock;
+
+        return $this;
+    }
+
+    public function getBrand(): ?string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?string $brand): self
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?float $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getNumReviews(): ?float
+    {
+        return $this->numReviews;
+    }
+
+    public function setNumReviews(?float $numReviews): self
+    {
+        $this->numReviews = $numReviews;
 
         return $this;
     }
