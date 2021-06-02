@@ -141,7 +141,7 @@ class User implements UserInterface
      *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $accountStatus;
 
