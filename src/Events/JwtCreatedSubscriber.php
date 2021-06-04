@@ -13,6 +13,7 @@ class JwtCreatedSubscriber
 
         // 2. Enrichir les data pour qu'elles contiennent ces données
         $data = $event->getData();
+        $data['id'] = $user->getId();
         $data['firstName'] = $user->getFirstName();
         $data['lastName'] = $user->getLastName();
 
