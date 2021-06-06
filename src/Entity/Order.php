@@ -85,31 +85,31 @@ class Order
 
     /**
      * @Groups({"order_read", "order_write", "user_read"})
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true,)
      */
     private $paymentMethod;
 
     /**
      * @Groups({"order_read", "order_write", "user_read"})
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true,)
      */
     private $itemsPrice;
 
     /**
      * @Groups({"order_read", "order_write", "user_read"})
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true,)
      */
     private $shippingPrice;
 
     /**
      * @Groups({"order_read", "order_write", "user_read"})
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true,)
      */
     private $taxPrice;
 
     /**
      * @Groups({"order_read", "order_write", "user_read"})
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true,)
      */
     private $totalPrice;
 
