@@ -45,7 +45,7 @@ class Order
     /**
      * @Groups({"order_read", "order_write"})
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, nullable=true)
      */
     private $customer;
 
@@ -57,13 +57,13 @@ class Order
 
     /**
      * @Groups({"order_read", "order_write", "user_read"})
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $status;
 
     /**
      * @Groups({"order_read", "order_write", "user_read"})
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $amount;
 
