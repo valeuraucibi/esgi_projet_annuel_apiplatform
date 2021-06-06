@@ -61,6 +61,7 @@ security:
             methods: [POST, PUT, DELETE ]
           }
         - { path: ^/orders, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/shipping_addresses, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/comments, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/messages, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/bookmarks, roles: IS_AUTHENTICATED_FULLY }

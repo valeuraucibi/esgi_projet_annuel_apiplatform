@@ -111,7 +111,7 @@ class Product
 
     /**
      * @Groups({"product_read"})
-     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="products")
+     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="orderItems")
      */
     private $orders;
 
@@ -156,6 +156,8 @@ class Product
      * @ORM\Column(type="float", nullable=true)
      */
     private $numReviews;
+
+  
 
 
     // END GEDMO
@@ -328,32 +330,7 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection|Order[]
-     */
-    public function getOrders(): Collection
-    {
-        return $this->orders;
-    }
-
-    public function addOrder(Order $order): self
-    {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->addProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrder(Order $order): self
-    {
-        if ($this->orders->removeElement($order)) {
-            $order->removeProduct($this);
-        }
-
-        return $this;
-    }
+    
 
     public function getCountInStock(): ?float
     {
@@ -399,6 +376,33 @@ class Product
     public function setNumReviews(?float $numReviews): self
     {
         $this->numReviews = $numReviews;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->addOrderItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            $order->removeOrderItem($this);
+        }
 
         return $this;
     }
