@@ -146,7 +146,7 @@ class Order
 
     /**
      * @ORM\ManyToOne(targetEntity=PaymentResult::class, inversedBy="orders")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $paymentResult;
 
