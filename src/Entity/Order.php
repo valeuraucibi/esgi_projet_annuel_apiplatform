@@ -145,6 +145,7 @@ class Order
     private $shippingAddress;
 
     /**
+     * @Groups({"order_read", "order_write"})
      * @ORM\ManyToOne(targetEntity=PaymentResult::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=true)
      */
