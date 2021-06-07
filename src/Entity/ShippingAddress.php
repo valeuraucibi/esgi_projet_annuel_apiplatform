@@ -7,6 +7,7 @@ use App\Repository\ShippingAddressRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource()
@@ -15,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ShippingAddress
 {
     /**
+     * @Groups({ "order_read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -22,26 +24,31 @@ class ShippingAddress
     private $id;
 
     /**
+     *  @Groups({ "order_read"})
      * @ORM\Column(type="string", length=255)
      */
     private $fullName;
 
     /**
+     *  @Groups({ "order_read"})
      * @ORM\Column(type="text")
      */
     private $address;
 
     /**
+     *  @Groups({ "order_read"})
      * @ORM\Column(type="string", length=255)
      */
     private $city;
 
     /**
+     *  @Groups({ "order_read"})
      * @ORM\Column(type="string", length=255)
      */
     private $postalCode;
 
     /**
+     *  @Groups({ "order_read"})
      * @ORM\Column(type="string", length=255)
      */
     private $country;

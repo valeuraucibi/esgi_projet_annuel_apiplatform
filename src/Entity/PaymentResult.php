@@ -7,6 +7,7 @@ use App\Repository\PaymentResultRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource()
@@ -15,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 class PaymentResult
 {
     /**
+     * @Groups({ "order_read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -22,16 +24,19 @@ class PaymentResult
     private $id;
 
     /**
+     * @Groups({ "order_read"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $status;
 
     /**
+     * @Groups({ "order_read"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $emailAddress;
 
     /**
+     * @Groups({ "order_read"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $updateTime;
