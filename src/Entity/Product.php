@@ -36,7 +36,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *  subresourceOperations={
  *  "api_orders_products_get_subresource"={
  *          "normalization_context"={"groups"={"product_order_subresource"}}
- *        }
+ *        },
  *  "api_categories_products_get_subresource"={
  *          "normalization_context"={"groups"={"product_subresource"}}
  *  }
