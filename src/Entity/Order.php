@@ -27,7 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get"={},
  *          "delete"={},
  *          "put"={},
- *          "post"={},
  *          
  *     }
  * )
