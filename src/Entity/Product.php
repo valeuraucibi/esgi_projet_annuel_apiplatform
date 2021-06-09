@@ -26,7 +26,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *  normalizationContext={"groups"={"product_read"}},
  *  collectionOperations={
  *          "get"={},
- *          "post"={}
+ *          "post"={},
+ *          
  *     },
  *     itemOperations={
  *          "get"={},
@@ -109,12 +110,14 @@ class Product
     /**
      * @Groups({"product_read"})
      * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="product")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $bookmarks;
 
     /**
      * @Groups({"product_read"})
-     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="orderItems")
+     * @ORM\ManyToMany(targetEntity=Order::class, inversedBy="orderItems")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $orders;
 
@@ -395,7 +398,7 @@ class Product
     {
         if (!$this->orders->contains($order)) {
             $this->orders[] = $order;
-            $order->addOrderItem($this);
+            //$order->addOrderItem($this);
         }
 
         return $this;
@@ -404,7 +407,7 @@ class Product
     public function removeOrder(Order $order): self
     {
         if ($this->orders->removeElement($order)) {
-            $order->removeOrderItem($this);
+            //$order->removeOrderItem($this);
         }
 
         return $this;

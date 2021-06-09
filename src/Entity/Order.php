@@ -28,7 +28,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "delete"={},
  *          "put"={},
  *          
- *     }
+ *     },
+ *     subresourceOperations={
+ *      "orders_get_subresource"={"path"="/orders/{id}/products"}
+ *         },
+ *     
  * )
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
@@ -51,8 +55,9 @@ class Order
     private $customer;
 
     /**
+     * @ApiSubresource
      * @Groups({"order_read", "order_write"})
-     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="orders")
+     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="orders")
      */
     private $orderItems;
 
@@ -366,6 +371,7 @@ class Order
     {
         if (!$this->orderItems->contains($orderItem)) {
             $this->orderItems[] = $orderItem;
+            $orderItem->addOrder($this);
         }
 
         return $this;
@@ -374,6 +380,7 @@ class Order
     public function removeOrderItem(Product $orderItem): self
     {
         $this->orderItems->removeElement($orderItem);
+        $orderItem->removeOrder($this);
 
         return $this;
     }
