@@ -24,9 +24,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      "order": {"price":"desc"}
  *  },
  *  normalizationContext={"groups"={"product_read"}},
+ *  denormalizationContext={"disable_type_enforcement"=true},
  *  collectionOperations={
  *          "get"={},
- *          "post"={}
+ *          "post"={},
+ *          
  *     },
  *     itemOperations={
  *          "get"={},
@@ -34,6 +36,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "put"={},
  *     },
  *  subresourceOperations={
+ *  "api_orders_products_get_subresource"={
+ *          "normalization_context"={"groups"={"product_order_subresource"}}
+ *        },
  *  "api_categories_products_get_subresource"={
  *          "normalization_context"={"groups"={"product_subresource"}}
  *  }
@@ -47,7 +52,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Product
 {
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -55,7 +60,7 @@ class Product
     private $id;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le nom est obligatoire")
      * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères", max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
@@ -63,13 +68,13 @@ class Product
     private $name;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="Le prix est obligatoire")
      * @Assert\Type(type="float", message="List price must be a numeric value")
@@ -91,13 +96,13 @@ class Product
     private $category;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $image;
 
     /**
-     * @Groups({"product_read", "product_subresource"})
+     * @Groups({"product_read", "product_subresource", "product_order_subresource"})
      * @ApiSubresource
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="product")
      */
@@ -106,12 +111,14 @@ class Product
     /**
      * @Groups({"product_read"})
      * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="product")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $bookmarks;
 
     /**
      * @Groups({"product_read"})
-     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="products")
+     * @ORM\ManyToMany(targetEntity=Order::class, inversedBy="orderItems")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $orders;
 
@@ -132,6 +139,32 @@ class Product
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
+    /**
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @ORM\Column(type="float")
+     */
+    private $countInStock;
+
+    /**
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $brand;
+
+    /**
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $rating;
+
+    /**
+     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $numReviews;
+
+  
 
 
     // END GEDMO
@@ -304,6 +337,56 @@ class Product
         return $this;
     }
 
+    
+
+    public function getCountInStock(): ?float
+    {
+        return $this->countInStock;
+    }
+
+    public function setCountInStock(float $countInStock): self
+    {
+        $this->countInStock = $countInStock;
+
+        return $this;
+    }
+
+    public function getBrand(): ?string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?string $brand): self
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?float $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getNumReviews(): ?float
+    {
+        return $this->numReviews;
+    }
+
+    public function setNumReviews(?float $numReviews): self
+    {
+        $this->numReviews = $numReviews;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Order[]
      */
@@ -316,7 +399,7 @@ class Product
     {
         if (!$this->orders->contains($order)) {
             $this->orders[] = $order;
-            $order->addProduct($this);
+            //$order->addOrderItem($this);
         }
 
         return $this;
@@ -325,7 +408,7 @@ class Product
     public function removeOrder(Order $order): self
     {
         if ($this->orders->removeElement($order)) {
-            $order->removeProduct($this);
+            //$order->removeOrderItem($this);
         }
 
         return $this;

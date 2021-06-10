@@ -27,7 +27,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get"={},
  *          "delete"={},
  *          "put"={},
- *     }
+ *          
+ *     },
+ *     subresourceOperations={
+ *      "orders_get_subresource"={"path"="/orders/{id}/products"}
+ *         },
+ *     
  * )
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
@@ -35,7 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Order
 {
     /**
-     * @Groups({"order_read","user_read"})
+     * @Groups({"order_read","user_read", "product_read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -45,25 +50,26 @@ class Order
     /**
      * @Groups({"order_read", "order_write"})
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, nullable=true)
      */
     private $customer;
 
     /**
+     * @ApiSubresource
      * @Groups({"order_read", "order_write"})
-     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="orders")
+     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="orders")
      */
-    private $products;
+    private $orderItems;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read"})
-     * @ORM\Column(type="string", length=100)
+     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $status;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read"})
-     * @ORM\Column(type="float")
+     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @ORM\Column(type="float", nullable=true)
      */
     private $amount;
 
@@ -83,14 +89,86 @@ class Order
      */
     private $updatedAt;
 
-    // END GEDMO
+    /**
+     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @ORM\Column(type="string", length=255, nullable=true,)
+     */
+    private $paymentMethod;
+
+    /**
+     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @ORM\Column(type="float", nullable=true,)
+     */
+    private $itemsPrice;
+
+    /**
+     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @ORM\Column(type="float", nullable=true,)
+     */
+    private $shippingPrice;
+
+    /**
+     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @ORM\Column(type="float", nullable=true,)
+     */
+    private $taxPrice;
+
+    /**
+     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @ORM\Column(type="float", nullable=true,)
+     */
+    private $totalPrice;
+
+    /**
+     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @ORM\Column(type="boolean", nullable=true, options={"default":false})
+     */
+    private $isPaid;
+
+    /**
+     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $paidAt;
+
+    /**
+     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @ORM\Column(type="boolean", nullable=true, options={"default":false})
+     */
+    private $isDelivered;
+
+    /**
+     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deliveredAt;
+
+    /**
+     * @Groups({"order_read", "order_write"})
+     * @ORM\ManyToOne(targetEntity=ShippingAddress::class, inversedBy="orders")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $shippingAddress;
+
+    /**
+     * @Groups({"order_read", "order_write"})
+     * @ORM\ManyToOne(targetEntity=PaymentResult::class, inversedBy="orders")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $paymentResult;
 
     
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
     }
+
+    // END GEDMO
+
+    
+
+ 
 
     
 
@@ -159,26 +237,162 @@ class Order
         return $this;
     }
 
+    
+
+    public function getPaymentMethod(): ?string
+    {
+        return $this->paymentMethod;
+    }
+
+    public function setPaymentMethod(string $paymentMethod): self
+    {
+        $this->paymentMethod = $paymentMethod;
+
+        return $this;
+    }
+
+    public function getItemsPrice(): ?float
+    {
+        return $this->itemsPrice;
+    }
+
+    public function setItemsPrice(float $itemsPrice): self
+    {
+        $this->itemsPrice = $itemsPrice;
+
+        return $this;
+    }
+
+    public function getShippingPrice(): ?float
+    {
+        return $this->shippingPrice;
+    }
+
+    public function setShippingPrice(float $shippingPrice): self
+    {
+        $this->shippingPrice = $shippingPrice;
+
+        return $this;
+    }
+
+    public function getTaxPrice(): ?float
+    {
+        return $this->taxPrice;
+    }
+
+    public function setTaxPrice(float $taxPrice): self
+    {
+        $this->taxPrice = $taxPrice;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?float
+    {
+        return $this->totalPrice;
+    }
+
+    public function setTotalPrice(float $totalPrice): self
+    {
+        $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    public function getIsPaid(): ?bool
+    {
+        return $this->isPaid;
+    }
+
+    public function setIsPaid(?bool $isPaid): self
+    {
+        $this->isPaid = $isPaid;
+
+        return $this;
+    }
+
+    public function getPaidAt(): ?\DateTimeInterface
+    {
+        return $this->paidAt;
+    }
+
+    public function setPaidAt(?\DateTimeInterface $paidAt): self
+    {
+        $this->paidAt = $paidAt;
+
+        return $this;
+    }
+
+    public function getIsDelivered(): ?bool
+    {
+        return $this->isDelivered;
+    }
+
+    public function setIsDelivered(bool $isDelivered): self
+    {
+        $this->isDelivered = $isDelivered;
+
+        return $this;
+    }
+
+    public function getDeliveredAt(): ?\DateTimeInterface
+    {
+        return $this->deliveredAt;
+    }
+
+    public function setDeliveredAt(?\DateTimeInterface $deliveredAt): self
+    {
+        $this->deliveredAt = $deliveredAt;
+
+        return $this;
+    }
+
+    public function getShippingAddress(): ?ShippingAddress
+    {
+        return $this->shippingAddress;
+    }
+
+    public function setShippingAddress(?ShippingAddress $shippingAddress): self
+    {
+        $this->shippingAddress = $shippingAddress;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Product[]
      */
-    public function getProducts(): Collection
+    public function getOrderItems(): Collection
     {
-        return $this->products;
+        return $this->orderItems;
     }
 
-    public function addProduct(Product $product): self
+    public function addOrderItem(Product $orderItem): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems[] = $orderItem;
+            $orderItem->addOrder($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(Product $product): self
+    public function removeOrderItem(Product $orderItem): self
     {
-        $this->products->removeElement($product);
+        $this->orderItems->removeElement($orderItem);
+        $orderItem->removeOrder($this);
+
+        return $this;
+    }
+
+    public function getPaymentResult(): ?PaymentResult
+    {
+        return $this->paymentResult;
+    }
+
+    public function setPaymentResult(?PaymentResult $paymentResult): self
+    {
+        $this->paymentResult = $paymentResult;
 
         return $this;
     }

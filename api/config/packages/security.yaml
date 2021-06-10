@@ -55,12 +55,13 @@ security:
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/products, roles: IS_AUTHENTICATED_FULLY,
-            methods: [POST, PUT, DELETE ]
+            #methods: [POST, PUT, DELETE ]
           }
         - { path: ^/categories, roles: IS_AUTHENTICATED_FULLY,
             methods: [POST, PUT, DELETE ]
           }
         - { path: ^/orders, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/shipping_addresses, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/comments, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/messages, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/bookmarks, roles: IS_AUTHENTICATED_FULLY }

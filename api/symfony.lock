@@ -55,6 +55,9 @@
     "doctrine/dbal": {
         "version": "2.10.2"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.0",
         "recipe": {
@@ -190,6 +193,9 @@
         "files": [
             "config/packages/lexik_jwt_authentication.yaml"
         ]
+    },
+    "mmo/faker-images": {
+        "version": "v0.3.0"
     },
     "monolog/monolog": {
         "version": "2.1.1"

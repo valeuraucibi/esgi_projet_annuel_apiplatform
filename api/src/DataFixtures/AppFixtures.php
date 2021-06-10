@@ -11,6 +11,8 @@ use App\Entity\Message;
 use App\Entity\Product;
 use App\Entity\Bookmark;
 use App\Entity\Category;
+use App\Entity\PaymentResult;
+use App\Entity\ShippingAddress;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -29,6 +31,7 @@ class AppFixtures extends Fixture
     {
 
         $faker = Factory::create('fr_FR');
+        $faker->addProvider(new \Mmo\Faker\PicsumProvider($faker));
 
         //$contentChanged   = $faker->dateTime('now');
         //->setContentChanged($contentChanged)
@@ -133,9 +136,33 @@ class AppFixtures extends Fixture
         for($i=1; $i<=10; $i++){
             $category = new Category();
             $category->setName($faker->jobTitle($nbWords = 15, $variableNbWords = false))
-            ->setDescription('<p>'. join('</p><p>', $faker->paragraphs(4)) . '</p>');
+            ->setDescription($faker->paragraph(4));
             $manager->persist($category);
             $categories[]= $category;
+        }
+
+        // Nous gérons shipping address
+        $shippingAddresses = [];
+        for($i=1; $i<=10; $i++){
+            $shippingAddress = new ShippingAddress();
+            $shippingAddress->setFullName($faker->firstname)
+            ->setAddress($faker->address)
+            ->setPostalCode(mt_rand(9000, 10000))
+            ->setCity($faker->city)
+            ->setCountry($faker->country)
+            ;  
+            $manager->persist($shippingAddress);
+            $shippingAddresses[]= $shippingAddress;
+        }
+
+        // Nous gérons payment result
+        $paymentResults = [];
+        for($i=1; $i<=10; $i++){
+            $paymentResult = new PaymentResult();
+            $paymentResult->setStatus($faker->randomElement(['Paid', 'Not paid']))
+                          ->setEmailAddress($faker->email);
+            $manager->persist($paymentResult);
+            $paymentResults[]= $paymentResult;
         }
         
         // Gestion des Order
@@ -148,10 +175,21 @@ class AppFixtures extends Fixture
 
           //  $product = $products[mt_rand(0, count($products) -1)];
             $customerOrder  = $customers[$faker->unique()->numberBetween(0, count($customers) - 1)];
+            $orderPaymentResult    = $paymentResults[mt_rand(0, count($paymentResults) -1)];
+            $ordershippingAddress    = $shippingAddresses[mt_rand(0, count($shippingAddresses) -1)];
 
             $order->setCustomer($customerOrder)
                   ->setStatus($faker->randomElement(['SENT', 'PAID', 'CANCELLED']))   
-                  ->setAmount(mt_rand(50, 1000));
+                  ->setAmount(mt_rand(50, 1000))
+                  ->setItemsPrice(mt_rand(50, 100))
+                  ->setShippingPrice(mt_rand(50, 110))
+                  ->setTaxPrice(mt_rand(60, 120))
+                  ->setTotalPrice(mt_rand(50, 1000))
+                  ->setPaymentResult($orderPaymentResult)
+                  ->setShippingAddress($ordershippingAddress)
+                  ->setPaymentMethod($faker->randomElement(['PAYPAL', 'STRIPE']))  
+                  //
+                  ;
 
                 //Nous gérons les Produits
         
@@ -171,13 +209,17 @@ class AppFixtures extends Fixture
                // $order = $orders[mt_rand(0, count($orders) -1)];
         
                 $product->setName($name)
-                ->setImage($image)
+                ->setImage($faker->picsumUrl(829, 679))
                 //->setReference($faker->isbn13()) 
-                ->setDescription($description)
+                ->setBrand($faker->jobTitle($nbWords = 15, $variableNbWords = true))
+                ->setDescription($faker->paragraph(4))
                 ->setPrice(mt_rand(40, 200))
                 ->setUserId($userSeller)
                 ->setCategory($category)
                 ->addOrder($order)
+                ->setRating(mt_rand(1, 5))
+                ->setNumReviews(mt_rand(8, 21))
+                ->setCountInStock(mt_rand(0, 25))
                 ;
             
                     // Gestion des commentaires
