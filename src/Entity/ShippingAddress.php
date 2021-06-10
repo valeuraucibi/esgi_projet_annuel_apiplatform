@@ -24,7 +24,7 @@ class ShippingAddress
     private $id;
 
     /**
-     *  @Groups({ "order_read"})
+     * @Groups({ "order_read"})
      * @ORM\Column(type="string", length=255)
      */
     private $fullName;
@@ -54,7 +54,7 @@ class ShippingAddress
     private $country;
 
     /**
-     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="shippingAddress")
+     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="shippingAddress")
      */
     private $orders;
 
@@ -62,6 +62,10 @@ class ShippingAddress
     {
         $this->orders = new ArrayCollection();
     }
+
+    
+
+   
 
     public function getId(): ?int
     {
@@ -140,7 +144,7 @@ class ShippingAddress
     {
         if (!$this->orders->contains($order)) {
             $this->orders[] = $order;
-            $order->setShippingAddress($this);
+            $order->addShippingAddress($this);
         }
 
         return $this;
@@ -149,12 +153,13 @@ class ShippingAddress
     public function removeOrder(Order $order): self
     {
         if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
-            if ($order->getShippingAddress() === $this) {
-                $order->setShippingAddress(null);
-            }
+            $order->removeShippingAddress($this);
         }
 
         return $this;
     }
+
+    
+
+
 }

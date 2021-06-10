@@ -186,7 +186,7 @@ class AppFixtures extends Fixture
                   ->setTaxPrice(mt_rand(60, 120))
                   ->setTotalPrice(mt_rand(50, 1000))
                   ->setPaymentResult($orderPaymentResult)
-                  ->setShippingAddress($ordershippingAddress)
+                  ->addShippingAddress($ordershippingAddress)
                   ->setPaymentMethod($faker->randomElement(['PAYPAL', 'STRIPE']))  
                   //
                   ;

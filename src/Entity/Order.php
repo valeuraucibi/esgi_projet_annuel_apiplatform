@@ -143,12 +143,7 @@ class Order
      */
     private $deliveredAt;
 
-    /**
-     * @Groups({"order_read", "order_write"})
-     * @ORM\ManyToOne(targetEntity=ShippingAddress::class, inversedBy="orders")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $shippingAddress;
+   
 
     /**
      * @Groups({"order_read", "order_write"})
@@ -157,11 +152,19 @@ class Order
      */
     private $paymentResult;
 
+    /**
+     * @Groups({"order_read", "order_write"})
+     * @ORM\ManyToMany(targetEntity=ShippingAddress::class, inversedBy="orders")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $shippingAddress;
+
     
 
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
+        $this->shippingAddress = new ArrayCollection();
     }
 
     // END GEDMO
@@ -347,17 +350,7 @@ class Order
         return $this;
     }
 
-    public function getShippingAddress(): ?ShippingAddress
-    {
-        return $this->shippingAddress;
-    }
-
-    public function setShippingAddress(?ShippingAddress $shippingAddress): self
-    {
-        $this->shippingAddress = $shippingAddress;
-
-        return $this;
-    }
+    
 
     /**
      * @return Collection|Product[]
@@ -393,6 +386,30 @@ class Order
     public function setPaymentResult(?PaymentResult $paymentResult): self
     {
         $this->paymentResult = $paymentResult;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ShippingAddress[]
+     */
+    public function getShippingAddress(): Collection
+    {
+        return $this->shippingAddress;
+    }
+
+    public function addShippingAddress(ShippingAddress $shippingAddress): self
+    {
+        if (!$this->shippingAddress->contains($shippingAddress)) {
+            $this->shippingAddress[] = $shippingAddress;
+        }
+
+        return $this;
+    }
+
+    public function removeShippingAddress(ShippingAddress $shippingAddress): self
+    {
+        $this->shippingAddress->removeElement($shippingAddress);
 
         return $this;
     }
