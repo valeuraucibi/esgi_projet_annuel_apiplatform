@@ -24,6 +24,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      "order": {"price":"desc"}
  *  },
  *  normalizationContext={"groups"={"product_read"}},
+ *  denormalizationContext={"disable_type_enforcement"=true},
  *  collectionOperations={
  *          "get"={},
  *          "post"={},
