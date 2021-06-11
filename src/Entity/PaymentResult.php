@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class PaymentResult
 {
     /**
-     * @Groups({ "order_read"})
+     * @Groups({ "order_read", "order_write"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -24,19 +24,19 @@ class PaymentResult
     private $id;
 
     /**
-     * @Groups({ "order_read"})
+     * @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $status;
 
     /**
-     * @Groups({ "order_read"})
+     * @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $emailAddress;
 
     /**
-     * @Groups({ "order_read"})
+     * @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $updateTime;

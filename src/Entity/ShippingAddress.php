@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class ShippingAddress
 {
     /**
-     * @Groups({ "order_read"})
+     * @Groups({ "order_read", "order_write"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -24,31 +24,31 @@ class ShippingAddress
     private $id;
 
     /**
-     * @Groups({ "order_read"})
+     * @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $fullName;
 
     /**
-     *  @Groups({ "order_read"})
+     *  @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="text")
      */
     private $address;
 
     /**
-     *  @Groups({ "order_read"})
+     *  @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $city;
 
     /**
-     *  @Groups({ "order_read"})
+     *  @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $postalCode;
 
     /**
-     *  @Groups({ "order_read"})
+     *  @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $country;
