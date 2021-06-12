@@ -54,7 +54,7 @@ class ShippingAddress
     private $country;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="shippingAddress")
+     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="shippingAddress", cascade={"persist"})
      */
     private $orders;
 
