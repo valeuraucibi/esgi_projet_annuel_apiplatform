@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class ShippingAddress
 {
     /**
-     * @Groups({ "order_read", "order_write"})
+     * @Groups({ "order_read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
