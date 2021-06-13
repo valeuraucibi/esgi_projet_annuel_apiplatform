@@ -155,6 +155,7 @@ class Order
     private $shippingAddress;
 
     /**
+     * @Groups({"order_read", "order_write"})
      * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="theOrder")
      */
     private $orderItems;
