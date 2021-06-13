@@ -378,7 +378,7 @@ class Order
     {
         if (!$this->shippingAddress->contains($shippingAddress)) {
             $this->shippingAddress[] = $shippingAddress;
-            $shippingAddress->addOrder($this);
+         //   $shippingAddress->addOrder($this);
         }
 
         return $this;
