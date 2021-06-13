@@ -117,7 +117,7 @@ class Product
 
     /**
      * @Groups({"product_read"})
-     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="orderItems, "cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="orderItems")
      * @ORM\JoinColumn(nullable=true)
      */
     private $orders;
