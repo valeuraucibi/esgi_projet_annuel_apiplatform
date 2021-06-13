@@ -147,12 +147,7 @@ class Order
      */
     private $paymentResult;
 
-    /**
-     * @Groups({"order_read", "order_write"})
-     * @ORM\ManyToMany(targetEntity=ShippingAddress::class, inversedBy="orders")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $shippingAddress;
+    
 
     /**
      * @Groups({"order_read", "order_write"})
@@ -160,12 +155,18 @@ class Order
      */
     private $orderItems;
 
+    /**
+     * @Groups({"order_read", "order_write"})
+     * @ORM\OneToMany(targetEntity=ShippingAddress::class, mappedBy="theOrder", cascade={"persist"})
+     */
+    private $shippingAddress;
+
     
 
     public function __construct()
     {
-        $this->shippingAddress = new ArrayCollection();
         $this->orderItems = new ArrayCollection();
+        $this->shippingAddress = new ArrayCollection();
     }
 
     // END GEDMO
@@ -366,30 +367,7 @@ class Order
         return $this;
     }
 
-    /**
-     * @return Collection|ShippingAddress[]
-     */
-    public function getShippingAddress(): Collection
-    {
-        return $this->shippingAddress;
-    }
-
-    public function addShippingAddress(ShippingAddress $shippingAddress): self
-    {
-        if (!$this->shippingAddress->contains($shippingAddress)) {
-            $this->shippingAddress[] = $shippingAddress;
-           // $shippingAddress->addOrder($this);
-        }
-
-        return $this;
-    }
-
-    public function removeShippingAddress(ShippingAddress $shippingAddress): self
-    {
-        $this->shippingAddress->removeElement($shippingAddress);
-
-        return $this;
-    }
+    
 
     /**
      * @return Collection|OrderItem[]
@@ -415,6 +393,36 @@ class Order
             // set the owning side to null (unless already changed)
             if ($orderItem->getTheOrder() === $this) {
                 $orderItem->setTheOrder(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ShippingAddress[]
+     */
+    public function getShippingAddress(): Collection
+    {
+        return $this->shippingAddress;
+    }
+
+    public function addShippingAddress(ShippingAddress $shippingAddress): self
+    {
+        if (!$this->shippingAddress->contains($shippingAddress)) {
+            $this->shippingAddress[] = $shippingAddress;
+            $shippingAddress->setTheOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShippingAddress(ShippingAddress $shippingAddress): self
+    {
+        if ($this->shippingAddress->removeElement($shippingAddress)) {
+            // set the owning side to null (unless already changed)
+            if ($shippingAddress->getTheOrder() === $this) {
+                $shippingAddress->setTheOrder(null);
             }
         }
 

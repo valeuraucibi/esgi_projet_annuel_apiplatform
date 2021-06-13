@@ -54,13 +54,15 @@ class ShippingAddress
     private $country;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="shippingAddress", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="shippingAddress")
      */
-    private $orders;
+    private $theOrder;
+
+    
 
     public function __construct()
     {
-        $this->orders = new ArrayCollection();
+        
     }
 
     
@@ -132,32 +134,19 @@ class ShippingAddress
         return $this;
     }
 
-    /**
-     * @return Collection|Order[]
-     */
-    public function getOrders(): Collection
+    public function getTheOrder(): ?Order
     {
-        return $this->orders;
+        return $this->theOrder;
     }
 
-    public function addOrder(Order $order): self
+    public function setTheOrder(?Order $theOrder): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->addShippingAddress($this);
-        }
+        $this->theOrder = $theOrder;
 
         return $this;
     }
 
-    public function removeOrder(Order $order): self
-    {
-        if ($this->orders->removeElement($order)) {
-            $order->removeShippingAddress($this);
-        }
-
-        return $this;
-    }
+    
 
     
 
