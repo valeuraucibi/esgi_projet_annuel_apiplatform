@@ -402,7 +402,7 @@ class Order
     {
         if (!$this->orderItems->contains($orderItem)) {
             $this->orderItems[] = $orderItem;
-            //$orderItem->setTheOrder($this);
+            $orderItem->setTheOrder($this);
         }
 
         return $this;
