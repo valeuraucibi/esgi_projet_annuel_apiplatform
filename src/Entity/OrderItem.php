@@ -29,7 +29,7 @@ class OrderItem
 
     /**
      * @Groups({ "order_read", "order_write"})
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="float")
      */
     private $qty;
 
@@ -72,12 +72,12 @@ class OrderItem
         return $this;
     }
 
-    public function getQty(): ?string
+    public function getQty(): ?float
     {
         return $this->qty;
     }
 
-    public function setQty(string $qty): self
+    public function setQty(float $qty): self
     {
         $this->qty = $qty;
 
