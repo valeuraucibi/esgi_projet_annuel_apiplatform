@@ -54,12 +54,7 @@ class Order
      */
     private $customer;
 
-    /**
-     * @ApiSubresource
-     * @Groups({"order_read", "order_write"})
-     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="orders")
-     */
-    private $orderItems;
+  
 
     /**
      * @Groups({"order_read", "order_write", "user_read", "product_read"})
@@ -159,12 +154,17 @@ class Order
      */
     private $shippingAddress;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="theOrder")
+     */
+    private $orderItems;
+
     
 
     public function __construct()
     {
-        $this->orderItems = new ArrayCollection();
         $this->shippingAddress = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
     }
 
     // END GEDMO
@@ -352,32 +352,7 @@ class Order
 
     
 
-    /**
-     * @return Collection|Product[]
-     */
-    public function getOrderItems(): Collection
-    {
-        return $this->orderItems;
-    }
-
-    public function addOrderItem(Product $orderItem): self
-    {
-        if (!$this->orderItems->contains($orderItem)) {
-            $this->orderItems[] = $orderItem;
-            //$orderItem->addOrder($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderItem(Product $orderItem): self
-    {
-        $this->orderItems->removeElement($orderItem);
-        //$orderItem->removeOrder($this);
-
-        return $this;
-    }
-
+    
     public function getPaymentResult(): ?PaymentResult
     {
         return $this->paymentResult;
@@ -410,6 +385,36 @@ class Order
     public function removeShippingAddress(ShippingAddress $shippingAddress): self
     {
         $this->shippingAddress->removeElement($shippingAddress);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderItem[]
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItem $orderItem): self
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems[] = $orderItem;
+            $orderItem->setTheOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItem $orderItem): self
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getTheOrder() === $this) {
+                $orderItem->setTheOrder(null);
+            }
+        }
 
         return $this;
     }

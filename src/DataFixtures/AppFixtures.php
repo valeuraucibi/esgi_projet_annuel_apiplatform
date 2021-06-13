@@ -216,7 +216,7 @@ class AppFixtures extends Fixture
                 ->setPrice(mt_rand(40, 200))
                 ->setUserId($userSeller)
                 ->setCategory($category)
-                ->addOrder($order)
+                //->addOrder($order)
                 ->setRating(mt_rand(1, 5))
                 ->setNumReviews(mt_rand(8, 21))
                 ->setCountInStock(mt_rand(0, 25))

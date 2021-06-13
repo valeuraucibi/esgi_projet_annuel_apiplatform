@@ -115,13 +115,6 @@ class Product
      */
     private $bookmarks;
 
-    /**
-     * @Groups({"product_read"})
-     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="orderItems")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $orders;
-
      // GEDMO
 
     /**
@@ -164,6 +157,11 @@ class Product
      */
     private $numReviews;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="product")
+     */
+    private $productOrderItems;
+
   
 
 
@@ -173,7 +171,7 @@ class Product
     {
         $this->comments = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
-        $this->orders = new ArrayCollection();
+        $this->productOrderItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -388,29 +386,34 @@ class Product
     }
 
     /**
-     * @return Collection|Order[]
+     * @return Collection|OrderItem[]
      */
-    public function getOrders(): Collection
+    public function getProductOrderItems(): Collection
     {
-        return $this->orders;
+        return $this->productOrderItems;
     }
 
-    public function addOrder(Order $order): self
+    public function addProductOrderItem(OrderItem $productOrderItem): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->addOrderItem($this);
+        if (!$this->productOrderItems->contains($productOrderItem)) {
+            $this->productOrderItems[] = $productOrderItem;
+            $productOrderItem->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): self
+    public function removeProductOrderItem(OrderItem $productOrderItem): self
     {
-        if ($this->orders->removeElement($order)) {
-            $order->removeOrderItem($this);
+        if ($this->productOrderItems->removeElement($productOrderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($productOrderItem->getProduct() === $this) {
+                $productOrderItem->setProduct(null);
+            }
         }
 
         return $this;
     }
+
+    
 }
