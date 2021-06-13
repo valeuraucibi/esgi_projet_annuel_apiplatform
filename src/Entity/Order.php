@@ -149,7 +149,7 @@ class Order
 
     /**
      * @Groups({"order_read", "order_write"})
-     * @ORM\ManyToMany(targetEntity=ShippingAddress::class, inversedBy="orders")
+     * @ORM\ManyToMany(targetEntity=ShippingAddress::class, mappedBy="orders")
      * @ORM\JoinColumn(nullable=false)
      */
     private $shippingAddress;
