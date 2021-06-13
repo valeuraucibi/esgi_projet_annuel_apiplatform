@@ -57,7 +57,7 @@ class Order
     /**
      * @ApiSubresource
      * @Groups({"order_read", "order_write"})
-     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="orders")
+     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="orders")
      */
     private $orderItems;
 
@@ -364,7 +364,7 @@ class Order
     {
         if (!$this->orderItems->contains($orderItem)) {
             $this->orderItems[] = $orderItem;
-            $orderItem->addOrder($this);
+            //$orderItem->addOrder($this);
         }
 
         return $this;
@@ -373,7 +373,7 @@ class Order
     public function removeOrderItem(Product $orderItem): self
     {
         $this->orderItems->removeElement($orderItem);
-        $orderItem->removeOrder($this);
+        //$orderItem->removeOrder($this);
 
         return $this;
     }
