@@ -156,7 +156,7 @@ class Order
 
     /**
      * @Groups({"order_read", "order_write"})
-     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="theOrder")
+     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="theOrder", cascade={"persist"})
      */
     private $orderItems;
 
@@ -402,7 +402,7 @@ class Order
     {
         if (!$this->orderItems->contains($orderItem)) {
             $this->orderItems[] = $orderItem;
-            $orderItem->setTheOrder($this);
+            //$orderItem->setTheOrder($this);
         }
 
         return $this;
