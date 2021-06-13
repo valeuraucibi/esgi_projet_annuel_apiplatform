@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderItem
 {
     /**
+     * @Groups({ "order_read", "order_write"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,21 +21,25 @@ class OrderItem
     private $id;
 
     /**
+     * @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $qty;
 
     /**
+     * @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $image;
 
     /**
+     * @Groups({ "order_read", "order_write"})
      * @ORM\Column(type="float")
      */
     private $price;
