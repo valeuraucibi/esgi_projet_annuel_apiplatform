@@ -47,6 +47,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiFilter(OrderFilter::class, properties={"price","reference"})
  * @ApiFilter(SearchFilter::class, properties={"name":"partial","category.name":"partial"})
  * @ApiFilter(SearchFilter::class, properties={"name":"partial","name":"partial"})
+ * @ApiFilter(SearchFilter::class, properties={"user_id.id"})
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
 class Product
