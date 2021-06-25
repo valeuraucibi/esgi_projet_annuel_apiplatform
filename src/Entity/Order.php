@@ -14,6 +14,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
 /**
  * @ApiResource(
  *     normalizationContext={"groups"={"order_read"}},
@@ -34,6 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     
  * )
+ * @ApiFilter(SearchFilter::class, properties={"orderItems.product.user_id.id"})
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
  */
