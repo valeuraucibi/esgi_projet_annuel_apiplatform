@@ -9,9 +9,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  *  @ApiResource(
+ *  attributes={
+ *      "pagination_enabled"=true,
+ *      "pagination_items_per_page"=20,
+ *      "order": {"name":"desc"}
+ *  },
  *     normalizationContext={"groups"={"orderItem_read"}},
  *     denormalizationContext={"groups"={"orderItem_write"}},
- *     paginationItemsPerPage=20,
  *     collectionOperations={
  *          "get"={},
  *          "post"={}

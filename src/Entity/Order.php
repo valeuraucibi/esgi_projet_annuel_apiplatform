@@ -20,9 +20,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
+ *      attributes={
+ *      "pagination_enabled"=true,
+ *      "pagination_items_per_page"=20,
+ *      "order": {"amount":"desc"}
+ *      },
  *     normalizationContext={"groups"={"order_read"}},
  *     denormalizationContext={"groups"={"order_write"}},
- *     paginationItemsPerPage=20,
  *     collectionOperations={
  *          "get"={},
  *          "post"={}
