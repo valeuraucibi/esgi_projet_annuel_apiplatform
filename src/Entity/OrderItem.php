@@ -60,7 +60,7 @@ class OrderItem
     private $price;
 
     /**
-     * @Groups({  "orderItem_read", "orderItem_write"})
+     * @Groups({  "orderItem_read", "orderItem_write","order_read"})
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="productOrderItems")
      */
     private $product;
