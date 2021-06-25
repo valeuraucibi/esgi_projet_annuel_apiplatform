@@ -45,7 +45,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 class Order
 {
     /**
-     * @Groups({"order_read","user_read", "product_read"})
+     * @Groups({"order_read","user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -62,13 +62,13 @@ class Order
   
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $status;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="float", nullable=true)
      */
     private $amount;
@@ -90,55 +90,55 @@ class Order
     private $updatedAt;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="string", length=255, nullable=true,)
      */
     private $paymentMethod;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="float", nullable=true,)
      */
     private $itemsPrice;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="float", nullable=true,)
      */
     private $shippingPrice;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="float", nullable=true,)
      */
     private $taxPrice;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="float", nullable=true,)
      */
     private $totalPrice;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="boolean", nullable=true, options={"default":false})
      */
     private $isPaid;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $paidAt;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="boolean", nullable=true, options={"default":false})
      */
     private $isDelivered;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $deliveredAt;

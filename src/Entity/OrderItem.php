@@ -8,13 +8,27 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ *  @ApiResource(
+ *     normalizationContext={"groups"={"orderItem_read"}},
+ *     denormalizationContext={"groups"={"orderItem_write"}},
+ *     paginationItemsPerPage=20,
+ *     collectionOperations={
+ *          "get"={},
+ *          "post"={}
+ *     },
+ *     itemOperations={
+ *          "get"={},
+ *          "delete"={},
+ *          "put"={},
+ *          
+ *     },
+ * )
  * @ORM\Entity(repositoryClass=OrderItemRepository::class)
  */
 class OrderItem
 {
     /**
-     * @Groups({ "order_read", "order_write"})
+     * @Groups({ "order_read", "order_write", "orderItem_read", "product_read", "orderItem_write"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -22,35 +36,37 @@ class OrderItem
     private $id;
 
     /**
-     * @Groups({ "order_read", "order_write"})
+     * @Groups({ "order_read", "order_write", "orderItem_read", "product_read", "orderItem_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @Groups({ "order_read", "order_write"})
+     * @Groups({ "order_read", "order_write", "orderItem_read", "product_read", "orderItem_write"})
      * @ORM\Column(type="float")
      */
     private $qty;
 
     /**
-     * @Groups({ "order_read", "order_write"})
+     * @Groups({ "order_read", "order_write", "orderItem_read", "product_read", "orderItem_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $image;
 
     /**
-     * @Groups({ "order_read", "order_write"})
+     * @Groups({ "order_read", "order_write", "orderItem_read", "product_read", "orderItem_write"})
      * @ORM\Column(type="float")
      */
     private $price;
 
     /**
+     * @Groups({  "orderItem_read", "orderItem_write"})
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="productOrderItems")
      */
     private $product;
 
     /**
+     * @Groups({  "orderItem_read", "orderItem_write"})
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="orderItems")
      */
     private $theOrder;
