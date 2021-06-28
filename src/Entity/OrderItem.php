@@ -97,7 +97,7 @@ class OrderItem
         return $this->qty;
     }
 
-    public function setQty(float $qty): self
+    public function setQty(?float $qty): self
     {
         $this->qty = $qty;
 
