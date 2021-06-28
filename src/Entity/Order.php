@@ -29,7 +29,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     denormalizationContext={"groups"={"order_write"}},
  *     collectionOperations={
  *          "get"={},
- *          "post"={"denormalization_context"={"disable_type_enforcement"=true} }
+ *          "post"={}
  *     },
  *     itemOperations={
  *          "get"={},
