@@ -29,7 +29,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     denormalizationContext={"groups"={"order_write"}},
  *     collectionOperations={
  *          "get"={},
- *          "post"={}
+ *          "post"={"denormalization_context"={"disable_type_enforcement"=true} }
  *     },
  *     itemOperations={
  *          "get"={},
@@ -270,7 +270,7 @@ class Order
         return $this->itemsPrice;
     }
 
-    public function setItemsPrice(float $itemsPrice): self
+    public function setItemsPrice(?float $itemsPrice): self
     {
         $this->itemsPrice = $itemsPrice;
 

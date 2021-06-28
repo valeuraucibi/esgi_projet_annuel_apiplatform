@@ -11,6 +11,8 @@ use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Bookmark;
 use App\Entity\Message;
 use App\Entity\Order;
+use App\Entity\OrderItem;
+use App\Entity\ShippingAddress;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EntityUserSubscriber implements EventSubscriberInterface
@@ -70,7 +72,21 @@ class EntityUserSubscriber implements EventSubscriberInterface
             if ($user4) {
                 $current->setUserId($user4);
             }
-        }else {
+        }/*else if ($current instanceof OrderItem && $method === "POST") {
+            // Choper l'utilisateur actuellement connecté
+            $user5 = $this->security->getUser();
+            // Assigner l'utilisateur au OrderItem qu'on est en train de créer
+            if ($user5) {
+                $current->setTheOrder($user5);
+            }
+        }else if ($current instanceof ShippingAddress && $method === "POST") {
+            // Choper l'utilisateur actuellement connecté
+            $user6 = $this->security->getUser();
+            // Assigner l'utilisateur au ShippingAddress qu'on est en train de créer
+            if ($user6) {
+                $current->setTheOrder($user6);
+            }
+        }*/else {
 
         }
     }
