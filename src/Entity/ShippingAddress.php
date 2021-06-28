@@ -58,6 +58,18 @@ class ShippingAddress
      */
     private $theOrder;
 
+    /**
+     * @Groups({ "order_read", "order_write"})
+     * @ORM\Column(type="float", nullable=true, options={"default" : 0})
+     */
+    private $lat;
+
+    /**
+     * @Groups({ "order_read", "order_write"})
+     * @ORM\Column(type="float", nullable=true, options={"default" : 0})
+     */
+    private $lng;
+
     
 
     public function __construct()
@@ -142,6 +154,30 @@ class ShippingAddress
     public function setTheOrder(?Order $theOrder): self
     {
         $this->theOrder = $theOrder;
+
+        return $this;
+    }
+
+    public function getLat(): ?float
+    {
+        return $this->lat;
+    }
+
+    public function setLat(?float $lat): self
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    public function getLng(): ?float
+    {
+        return $this->lng;
+    }
+
+    public function setLng(?float $lng): self
+    {
+        $this->lng = $lng;
 
         return $this;
     }

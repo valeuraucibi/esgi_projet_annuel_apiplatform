@@ -221,7 +221,7 @@ class User implements UserInterface
      *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="float", nullable=true, options={"default" : 0})
      */
     private $rating;
 
@@ -230,7 +230,7 @@ class User implements UserInterface
      *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
      *     "user_write",
      * })
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="float", nullable=true, options={"default" : 0})
      */
     private $numReviews;
 

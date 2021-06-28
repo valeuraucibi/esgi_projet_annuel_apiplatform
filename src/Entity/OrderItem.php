@@ -47,7 +47,7 @@ class OrderItem
 
     /**
      * @Groups({ "order_read", "order_write", "orderItem_read", "product_read", "orderItem_write"})
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", options={"default" : 1})
      */
     private $qty;
 
@@ -59,7 +59,7 @@ class OrderItem
 
     /**
      * @Groups({ "order_read", "order_write", "orderItem_read", "product_read", "orderItem_write"})
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", options={"default" : 0})
      */
     private $price;
 
