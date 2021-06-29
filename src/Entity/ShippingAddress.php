@@ -10,13 +10,31 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      attributes={
+ *      "pagination_enabled"=true,
+ *      "pagination_items_per_page"=20,
+ *      "order": {"name":"desc"}
+ *  },
+ *     normalizationContext={"groups"={"shippingAddress_read"}},
+ *     denormalizationContext={"groups"={"shippingAddress_write"}},
+ *     collectionOperations={
+ *          "get"={},
+ *          "post"={}
+ *     },
+ *     itemOperations={
+ *          "get"={},
+ *          "delete"={},
+ *          "put"={},
+ *          
+ *     },
+ * )
  * @ORM\Entity(repositoryClass=ShippingAddressRepository::class)
  */
 class ShippingAddress
 {
     /**
-     * @Groups({ "order_read"})
+     * @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -24,48 +42,49 @@ class ShippingAddress
     private $id;
 
     /**
-     * @Groups({ "order_read", "order_write"})
+     * @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $fullName;
 
     /**
-     *  @Groups({ "order_read", "order_write"})
+     *  @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="text")
      */
     private $address;
 
     /**
-     *  @Groups({ "order_read", "order_write"})
+     *  @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $city;
 
     /**
-     *  @Groups({ "order_read", "order_write"})
+     *  @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $postalCode;
 
     /**
-     *  @Groups({ "order_read", "order_write"})
+     *  @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $country;
 
     /**
+     * @Groups({"shippingAddress_read", "shippingAddress_write"})
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="shippingAddress")
      */
     private $theOrder;
 
     /**
-     * @Groups({ "order_read", "order_write"})
+     * @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="float", nullable=true, options={"default" : 0})
      */
     private $lat;
 
     /**
-     * @Groups({ "order_read", "order_write"})
+     * @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="float", nullable=true, options={"default" : 0})
      */
     private $lng;
