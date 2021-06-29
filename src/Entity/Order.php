@@ -156,7 +156,11 @@ class Order
      */
     private $paymentResult;
 
-    
+    /**
+     * @Groups({"order_read", "order_write"})
+     * @ORM\OneToMany(targetEntity=ShippingAddress::class, mappedBy="theOrder", cascade={"persist"})
+     */
+    private $shippingAddress;
 
     /**
      * @Groups({"order_read", "order_write"})
@@ -164,18 +168,15 @@ class Order
      */
     private $orderItems;
 
-    /**
-     * @Groups({"order_read", "order_write"})
-     * @ORM\OneToMany(targetEntity=ShippingAddress::class, mappedBy="theOrder", cascade={"persist"})
-     */
-    private $shippingAddress;
+    
 
     
 
     public function __construct()
     {
-        $this->orderItems = new ArrayCollection();
         $this->shippingAddress = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
+        
     }
 
     // END GEDMO
