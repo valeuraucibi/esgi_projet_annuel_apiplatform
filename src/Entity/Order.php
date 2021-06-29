@@ -416,22 +416,22 @@ class Order
         return $this->shippingAddress;
     }
 
-    public function addShippingAddress(ShippingAddress $shippingAddress): self
+    public function addShippingAddress(ShippingAddress $shippingAddres): self
     {
-        if (!$this->shippingAddress->contains($shippingAddress)) {
-            $this->shippingAddress[] = $shippingAddress;
-            $shippingAddress->setTheOrder($this);
+        if (!$this->shippingAddress->contains($shippingAddres)) {
+            $this->shippingAddress[] = $shippingAddres;
+            $shippingAddres->setTheOrder($this);
         }
 
         return $this;
     }
 
-    public function removeShippingAddress(ShippingAddress $shippingAddress): self
+    public function removeShippingAddress(ShippingAddress $shippingAddres): self
     {
-        if ($this->shippingAddress->removeElement($shippingAddress)) {
+        if ($this->shippingAddress->removeElement($shippingAddres)) {
             // set the owning side to null (unless already changed)
-            if ($shippingAddress->getTheOrder() === $this) {
-                $shippingAddress->setTheOrder(null);
+            if ($shippingAddres->getTheOrder() === $this) {
+                $shippingAddres->setTheOrder(null);
             }
         }
 
