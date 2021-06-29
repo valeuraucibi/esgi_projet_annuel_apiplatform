@@ -90,14 +90,6 @@ class ShippingAddress
     private $lng;
 
     
-
-    public function __construct()
-    {
-        
-    }
-
-    
-
    
 
     public function getId(): ?int
