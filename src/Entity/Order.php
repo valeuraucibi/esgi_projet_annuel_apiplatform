@@ -157,7 +157,7 @@ class Order
 
     /**
      * @Groups({"order_read", "order_write"})
-     * @ORM\ManyToOne(targetEntity=PaymentResult::class, inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity=PaymentResult::class, inversedBy="orders", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $paymentResult;
