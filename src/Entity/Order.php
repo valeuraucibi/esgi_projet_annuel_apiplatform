@@ -34,7 +34,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     itemOperations={
  *          "get"={},
  *          "delete"={},
- *          "put"={},
+ *          "put"={
+ *              "path": "/orders/{id}/pay",
+ *              "openapi_context"={
+ *                  "summary"="Inserer le paymentResult",
+ *                  "description"="Inserer le paymentResult"
+ *              }
+ *          },
  *          
  *     },
  *     subresourceOperations={
