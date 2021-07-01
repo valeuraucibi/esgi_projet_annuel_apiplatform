@@ -40,7 +40,16 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *                  "summary"="Inserer le paymentResult",
  *                  "description"="Inserer le paymentResult"
  *              }
+ *               
  *          },
+ *          "deliver"={
+ *              "method": "PUT",
+ *              "path": "deliv/orders/{id}/deliver",
+ *               "openapi_context"={
+ *                  "summary"="Inserer le deliver",
+ *                  "description"="Inserer le deliver"
+ *              }
+ *          }
  *          
  *     },
  *     subresourceOperations={

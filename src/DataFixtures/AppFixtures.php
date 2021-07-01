@@ -179,7 +179,7 @@ class AppFixtures extends Fixture
             $ordershippingAddress    = $shippingAddresses[mt_rand(0, count($shippingAddresses) -1)];
 
             $order->setCustomer($customerOrder)
-                  ->setStatus($faker->randomElement(['SENT', 'PAID', 'CANCELLED']))   
+                  ->setStatus($faker->randomElement([true, false]))   
                   ->setAmount(mt_rand(50, 1000))
                   ->setItemsPrice(mt_rand(50, 100))
                   ->setShippingPrice(mt_rand(50, 110))
