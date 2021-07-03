@@ -73,7 +73,7 @@ class ShippingAddress
 
     /**
      * @Groups({"shippingAddress_read", "shippingAddress_write"})
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="shippingAddress")
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="shippingAddress", )
      */
     private $theOrder;
 
