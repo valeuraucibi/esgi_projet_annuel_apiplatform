@@ -1,0 +1,113 @@
+<?php
+// api/src/EventSubscriber/OrderMailSubscriber.php
+
+namespace App\EventSubscriber;
+
+use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Entity\Order;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+
+final class OrderMailSubscriber implements EventSubscriberInterface
+{
+    private $mailer;
+
+    public function __construct(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::VIEW => ['sendMail', EventPriorities::POST_WRITE],
+        ];
+    }
+
+    public function sendMail(ViewEvent $event): void
+    {
+        $order = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+
+        if (!$order instanceof Order || Request::METHOD_POST !== $method) {
+            return;
+        }
+
+        $message = (new Email())
+            ->From('papadiaki90@gmail.com')
+            ->To($order->getCustomer()->getEmail)
+            ->subject('Time for Symfony Mailer!')
+            ->priority(Email::PRIORITY_HIGH)
+            //->setBody(sprintf('The order #%d has been added.', $order->getId()));
+             ->html(`<h1>Thanks for shopping with us</h1>
+  <p>
+  Hi {$order->getCustomer()->getfirstName} {$order->getCustomer()->getlastName},</p>
+  <p>We have finished processing your order.</p>
+  <h2>[Order {$order->getId}] ({$order->getCreatedAt->format('Y-m-d')})</h2>
+  <table>
+  <thead>
+  <tr>
+  <td><strong>Product</strong></td>
+  <td><strong>Quantity</strong></td>
+  <td><strong align="right">Price</strong></td>
+  </thead>
+  <tbody>`
+  foreach($order->getOrderItems() as $item) { 
+       `
+    <tr>
+    <td>{$item->getName()}</td>
+    <td align="center">{$item->getQty()}</td>
+    <td align="right"> {$item->getPrice()}</td>
+    </tr>
+  `;}
+  </tbody>
+  <tfoot>
+  <tr>
+  <td colspan="2">Items Price:</td>
+  <td align="right"> ${$order.itemsPrice.toFixed(2)}</td>
+  </tr>
+  <tr>
+  <td colspan="2">Tax Price:</td>
+  <td align="right"> ${$order.taxPrice.toFixed(2)}</td>
+  </tr>
+  <tr>
+  <td colspan="2">Shipping Price:</td>
+  <td align="right"> ${$order.shippingPrice.toFixed(2)}</td>
+  </tr>
+  <tr>
+  <td colspan="2"><strong>Total Price:</strong></td>
+  <td align="right"><strong> ${$order.totalPrice.toFixed(2)}</strong></td>
+  </tr>
+  <tr>
+  <td colspan="2">Payment Method:</td>
+  <td align="right">{$order.paymentMethod}</td>
+  </tr>
+  </table>
+  <h2>Shipping address</h2>
+  <p>
+  {$order.shippingAddress.fullName},<br/>
+  {$order.shippingAddress.address},<br/>
+  {$order.shippingAddress.city},<br/>
+  {$order.shippingAddress.country},<br/>
+  {$order.shippingAddress.postalCode}<br/>
+  </p>
+  <hr/>
+  <p>
+  Thanks for shopping with us.
+  </p>
+  `)
+
+        $this->mailer->send($message);
+    }
+    public function notify(Contact $contact)    {        $email = (new TemplatedEmail(/*'Prestataire :' .$contact->getAd()->getAuthor()->getFullName()*/) )   
+                 ->from('papadiaki90@gmail.com')            ->to($contact->getAd()->getAuthor()->getEmail())         
+           ->subject('Time for Symfony Mailer!')            ->replyTo($contact->getEmail())       
+             ->priority(Email::PRIORITY_HIGH)            ->htmlTemplate('emails/contact.html.twig')        
+            ->context([                'contact' => $contact,            ]);
+                $sentEmail = $this->mailer->send($email);    }
+}
