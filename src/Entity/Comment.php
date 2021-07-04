@@ -56,7 +56,7 @@ class Comment
     private $content;
 
     /**
-     * @Groups({"comment_read", "comment_write"})
+     * @Groups({"comment_read", "comment_write", "comment_subresource"})
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
