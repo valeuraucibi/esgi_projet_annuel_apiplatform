@@ -1,0 +1,6 @@
+App\Entity\Comment:
+  comment{1..10}:
+    author: "@user<numberBetween(1, 20)>"
+    content: <paragraph()>
+    rating: <mt_rand(1, 5)>
+    product: "@product<numberBetween(1, 20)>"

@@ -10,7 +10,6 @@
         "doctrine/annotations": "^1.0",
         "doctrine/common": "^2.7",
         "doctrine/doctrine-bundle": "^2.1",
-        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
         "fzaninotto/faker": "^1.9",
@@ -43,12 +42,15 @@
     },
     "require-dev": {
         "api-platform/schema-generator": "^2.2",
+        "behatch/contexts": "^3.3",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "friends-of-behat/symfony-extension": "^2.0",
+        "hautelook/alice-bundle": "^2.9",
         "symfony/browser-kit": "^5.1",
         "symfony/css-selector": "^5.1",
         "symfony/phpunit-bridge": "^5.1",
         "symfony/stopwatch": "^5.1",
         "symfony/var-dumper": "^5.1"
-        
     },
     "config": {
         "optimize-autoloader": true,

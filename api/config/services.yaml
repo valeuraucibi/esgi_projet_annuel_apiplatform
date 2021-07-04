@@ -41,3 +41,6 @@ services:
                 event: lexik_jwt_authentication.on_jwt_created,
                 method: updateJwtData,
                 }
+
+    App\Tests\Manager\FixturesManager:
+        tags: [ { name: fidry_alice_data_fixtures.processor } ]

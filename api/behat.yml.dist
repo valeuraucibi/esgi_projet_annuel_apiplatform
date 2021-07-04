@@ -1,0 +1,9 @@
+default:
+    suites:
+        default:
+            paths: [ "%paths.base%/tests/Behat/Features" ]
+            contexts:
+                - App\Tests\Behat\Contexts\RestContext
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension: null

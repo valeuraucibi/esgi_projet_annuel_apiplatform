@@ -1,0 +1,38 @@
+App\Entity\User:
+  user{1..20}:
+    firstname: <firstname()>
+    lastname: <lastname()>
+    email: <email()>
+    password: <hashPassword('password')>
+    roles: '[ROLE_USER]'
+    
+  userUnique:
+    firstname: 'test'
+    lastname: 'user'
+    email: 'user.test@gmail.com'
+    password: <hashPassword('test')>
+    roles: '[ROLE_USER]'
+
+  userSellerUnique:
+    firstname: 'seller'
+    lastname: 'user'
+    email: 'user.seller@gmail.com'
+    password: <hashPassword('password')>
+    roles: '[ROLE_SELLER]'
+
+  userSeller{1..20}:
+    firstname: <firstname()>
+    lastname: <lastname()>
+    email: <email()>
+    password: <hashPassword('password')>
+    roles: '[ROLE_SELLER]'
+  
+
+  admin:
+    firstname: 'admin'
+    lastname: 'admin'
+    email: 'admin@admin.com'
+    password: <hashPassword('admin')>
+    roles: '[ROLE_ADMIN]'
+    
+  

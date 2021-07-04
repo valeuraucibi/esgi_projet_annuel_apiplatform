@@ -1,0 +1,16 @@
+App\Entity\Order:
+    order{1..10}:
+        customer: "@user<numberBetween(1, 20)>"
+        status: <nameRandom()>
+        amount: <mt_rand(1, 5)>
+        paymentMethod: <nameRandom()>
+        itemsPrice: <mt_rand(1, 800)>
+        shippingPrice: <mt_rand(1, 30)>
+        taxPrice: <mt_rand(1, 10)>
+        totalPrice: <mt_rand(1, 2000)>
+        isPaid: false
+        paidAt: <date_create()>
+        isDelivered: false
+        deliveredAt: <date_create()>
+        paymentResult: "@paymentResult<numberBetween(1, 10)>"
+

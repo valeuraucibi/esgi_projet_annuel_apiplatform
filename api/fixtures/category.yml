@@ -1,0 +1,5 @@
+App\Entity\Category:
+  category{1..15}:
+    name: <nameRandom()>
+    products: ["@product*"]
+    

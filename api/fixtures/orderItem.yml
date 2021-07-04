@@ -1,0 +1,8 @@
+App\Entity\OrderItem:
+    orderItem{1..5}:
+        name: <nameRandom()>
+        qty: <mt_rand(1, 5)>
+        image: <imageUrl()>
+        price: <mt_rand(1, 200)>
+        product: '@product<numberBetween(1, 10)>'
+        theOrder: '@order<numberBetween(1, 10)>'

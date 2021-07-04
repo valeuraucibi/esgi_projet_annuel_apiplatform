@@ -1,0 +1,5 @@
+App\Entity\PaymentResult:
+    paymentResult{1..20}:
+        status: <nameRandom()>
+        emailAddress: <nameRandom()>
+        orders: ['@order<numberBetween(1, 10)>']
