@@ -63,7 +63,7 @@ class Category
 
     /**
      * @var \DateTime $createdAt
-     * @Groups({"comment_read" ,"product_read" ,"user_read" ,"comment_subresource"})
+     * @Groups({"category_read", "category_write","comment_read" ,"product_read" ,"user_read" ,"comment_subresource"})
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
@@ -71,7 +71,7 @@ class Category
 
     /**
      * @var \DateTime $updatedAt
-     * @Groups({"comment_read" , "product_read" , "user_read" , "comment_subresource"})
+     * @Groups({"category_read", "category_write","comment_read" , "product_read" , "user_read" , "comment_subresource"})
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
@@ -80,6 +80,7 @@ class Category
     // END GEDMO
 
     /**
+     * @Groups({"category_read", "category_write"})
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
      */
     private $products;

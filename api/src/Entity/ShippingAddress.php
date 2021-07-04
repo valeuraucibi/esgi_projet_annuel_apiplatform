@@ -10,13 +10,31 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      attributes={
+ *      "pagination_enabled"=true,
+ *      "pagination_items_per_page"=20,
+ *      "order": {"name":"desc"}
+ *  },
+ *     normalizationContext={"groups"={"shippingAddress_read"}},
+ *     denormalizationContext={"groups"={"shippingAddress_write"}},
+ *     collectionOperations={
+ *          "get"={},
+ *          "post"={}
+ *     },
+ *     itemOperations={
+ *          "get"={},
+ *          "delete"={},
+ *          "put"={},
+ *          
+ *     },
+ * )
  * @ORM\Entity(repositoryClass=ShippingAddressRepository::class)
  */
 class ShippingAddress
 {
     /**
-     * @Groups({ "order_read"})
+     * @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -24,44 +42,55 @@ class ShippingAddress
     private $id;
 
     /**
-     *  @Groups({ "order_read"})
+     * @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $fullName;
 
     /**
-     *  @Groups({ "order_read"})
+     *  @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="text")
      */
     private $address;
 
     /**
-     *  @Groups({ "order_read"})
+     *  @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $city;
 
     /**
-     *  @Groups({ "order_read"})
+     *  @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $postalCode;
 
     /**
-     *  @Groups({ "order_read"})
+     *  @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $country;
 
     /**
-     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="shippingAddress")
+     * @Groups({"shippingAddress_read", "shippingAddress_write"})
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="shippingAddress", )
      */
-    private $orders;
+    private $theOrder;
 
-    public function __construct()
-    {
-        $this->orders = new ArrayCollection();
-    }
+    /**
+     * @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
+     * @ORM\Column(type="float", nullable=true, options={"default" : 0})
+     */
+    private $lat;
+
+    /**
+     * @Groups({ "order_read", "order_write", "shippingAddress_read", "shippingAddress_write"})
+     * @ORM\Column(type="float", nullable=true, options={"default" : 0})
+     */
+    private $lng;
+
+    
+   
 
     public function getId(): ?int
     {
@@ -128,33 +157,45 @@ class ShippingAddress
         return $this;
     }
 
-    /**
-     * @return Collection|Order[]
-     */
-    public function getOrders(): Collection
+    public function getTheOrder(): ?Order
     {
-        return $this->orders;
+        return $this->theOrder;
     }
 
-    public function addOrder(Order $order): self
+    public function setTheOrder(?Order $theOrder): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->setShippingAddress($this);
-        }
+        $this->theOrder = $theOrder;
 
         return $this;
     }
 
-    public function removeOrder(Order $order): self
+    public function getLat(): ?float
     {
-        if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
-            if ($order->getShippingAddress() === $this) {
-                $order->setShippingAddress(null);
-            }
-        }
+        return $this->lat;
+    }
+
+    public function setLat(?float $lat): self
+    {
+        $this->lat = $lat;
 
         return $this;
     }
+
+    public function getLng(): ?float
+    {
+        return $this->lng;
+    }
+
+    public function setLng(?float $lng): self
+    {
+        $this->lng = $lng;
+
+        return $this;
+    }
+
+    
+
+    
+
+
 }

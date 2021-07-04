@@ -47,12 +47,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiFilter(OrderFilter::class, properties={"price","reference"})
  * @ApiFilter(SearchFilter::class, properties={"name":"partial","category.name":"partial"})
  * @ApiFilter(SearchFilter::class, properties={"name":"partial","name":"partial"})
+ * @ApiFilter(SearchFilter::class, properties={"user_id.id"})
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
 class Product
 {
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read", "order_read", "order_write","comment_read", "bookmark_read", "product_subresource", "product_order_subresource", "orderItem_read", "orderItem_write"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -60,7 +61,7 @@ class Product
     private $id;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read", "order_read", "order_write","comment_read", "bookmark_read", "product_subresource", "product_order_subresource", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le nom est obligatoire")
      * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères", max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
@@ -68,13 +69,13 @@ class Product
     private $name;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read", "order_read", "order_write","comment_read", "bookmark_read", "product_subresource", "product_order_subresource", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read", "order_read", "order_write","comment_read", "bookmark_read", "product_subresource", "product_order_subresource", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="Le prix est obligatoire")
      * @Assert\Type(type="float", message="List price must be a numeric value")
@@ -82,7 +83,7 @@ class Product
     private $price;
 
     /**
-     * @Groups({"product_read"})
+     * @Groups({"product_read", "orderItem_read"})
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -96,7 +97,7 @@ class Product
     private $category;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read", "order_read", "order_write","comment_read", "bookmark_read", "product_subresource", "product_order_subresource", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $image;
@@ -115,18 +116,11 @@ class Product
      */
     private $bookmarks;
 
-    /**
-     * @Groups({"product_read"})
-     * @ORM\ManyToMany(targetEntity=Order::class, inversedBy="orderItems")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $orders;
-
      // GEDMO
 
     /**
      * @var \DateTime $createdAt
-     * @Groups({"product_read" ,"category_read" ,"user_read" , "bookmark_read", "comment_read"})
+     * @Groups({"product_read" ,"category_read" ,"user_read", "order_read", "order_write", "bookmark_read", "comment_read"})
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
@@ -141,28 +135,34 @@ class Product
     private $updatedAt;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read", "order_read", "order_write","comment_read", "bookmark_read", "product_subresource", "product_order_subresource", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="float")
      */
     private $countInStock;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read", "order_read", "order_write","comment_read", "bookmark_read", "product_subresource", "product_order_subresource", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $brand;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read", "order_read", "order_write","comment_read", "bookmark_read", "product_subresource", "product_order_subresource", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="float", nullable=true)
      */
     private $rating;
 
     /**
-     * @Groups({"product_read" ,"category_read" ,"user_read" ,"comment_read", "bookmark_read", "product_subresource", "product_order_subresource"})
+     * @Groups({"product_read" ,"category_read" ,"user_read", "order_read", "order_write","comment_read", "bookmark_read", "product_subresource", "product_order_subresource", "orderItem_read", "orderItem_write"})
      * @ORM\Column(type="float", nullable=true)
      */
     private $numReviews;
+
+    /**
+     * @Groups({"product_read"})
+     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="product")
+     */
+    private $productOrderItems;
 
   
 
@@ -173,7 +173,7 @@ class Product
     {
         $this->comments = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
-        $this->orders = new ArrayCollection();
+        $this->productOrderItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -388,29 +388,34 @@ class Product
     }
 
     /**
-     * @return Collection|Order[]
+     * @return Collection|OrderItem[]
      */
-    public function getOrders(): Collection
+    public function getProductOrderItems(): Collection
     {
-        return $this->orders;
+        return $this->productOrderItems;
     }
 
-    public function addOrder(Order $order): self
+    public function addProductOrderItem(OrderItem $productOrderItem): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            //$order->addOrderItem($this);
+        if (!$this->productOrderItems->contains($productOrderItem)) {
+            $this->productOrderItems[] = $productOrderItem;
+            $productOrderItem->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): self
+    public function removeProductOrderItem(OrderItem $productOrderItem): self
     {
-        if ($this->orders->removeElement($order)) {
-            //$order->removeOrderItem($this);
+        if ($this->productOrderItems->removeElement($productOrderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($productOrderItem->getProduct() === $this) {
+                $productOrderItem->setProduct(null);
+            }
         }
 
         return $this;
     }
+
+    
 }

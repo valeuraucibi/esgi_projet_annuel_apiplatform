@@ -14,11 +14,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
 /**
  * @ApiResource(
+ *      attributes={
+ *      "pagination_enabled"=true,
+ *      "pagination_items_per_page"=20,
+ *      "order": {"amount":"desc"}
+ *      },
  *     normalizationContext={"groups"={"order_read"}},
  *     denormalizationContext={"groups"={"order_write"}},
- *     paginationItemsPerPage=20,
  *     collectionOperations={
  *          "get"={},
  *          "post"={}
@@ -26,7 +34,22 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *          "get"={},
  *          "delete"={},
- *          "put"={},
+ *          "put"={
+ *              "path": "/orders/{id}/pay",
+ *              "openapi_context"={
+ *                  "summary"="Inserer le paymentResult",
+ *                  "description"="Inserer le paymentResult"
+ *              }
+ *               
+ *          },
+ *          "deliver"={
+ *              "method": "PUT",
+ *              "path": "deliv/orders/{id}/deliver",
+ *               "openapi_context"={
+ *                  "summary"="Inserer le deliver",
+ *                  "description"="Inserer le deliver"
+ *              }
+ *          }
  *          
  *     },
  *     subresourceOperations={
@@ -34,13 +57,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     
  * )
+ * @ApiFilter(SearchFilter::class, properties={"orderItems.product.user_id.id"})
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
  */
 class Order
 {
     /**
-     * @Groups({"order_read","user_read", "product_read"})
+     * @Groups({"order_read","user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -54,21 +78,16 @@ class Order
      */
     private $customer;
 
-    /**
-     * @ApiSubresource
-     * @Groups({"order_read", "order_write"})
-     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="orders")
-     */
-    private $orderItems;
+  
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $status;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="float", nullable=true)
      */
     private $amount;
@@ -90,78 +109,89 @@ class Order
     private $updatedAt;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="string", length=255, nullable=true,)
      */
     private $paymentMethod;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="float", nullable=true,)
      */
     private $itemsPrice;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="float", nullable=true,)
      */
     private $shippingPrice;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="float", nullable=true,)
      */
     private $taxPrice;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="float", nullable=true,)
      */
     private $totalPrice;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="boolean", nullable=true, options={"default":false})
      */
     private $isPaid;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $paidAt;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="boolean", nullable=true, options={"default":false})
      */
     private $isDelivered;
 
     /**
-     * @Groups({"order_read", "order_write", "user_read", "product_read"})
+     * @Groups({"order_read", "order_write", "user_read", "product_read", "orderItem_read", "orderItem_write", "shippingAddress_read", "shippingAddress_write"})
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $deliveredAt;
 
+   
+
     /**
      * @Groups({"order_read", "order_write"})
-     * @ORM\ManyToOne(targetEntity=ShippingAddress::class, inversedBy="orders")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=PaymentResult::class, inversedBy="orders", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $paymentResult;
+
+    /**
+     * @Groups({"order_read", "order_write"})
+     * @ORM\OneToMany(targetEntity=ShippingAddress::class, mappedBy="theOrder", cascade={"persist"})
      */
     private $shippingAddress;
 
     /**
      * @Groups({"order_read", "order_write"})
-     * @ORM\ManyToOne(targetEntity=PaymentResult::class, inversedBy="orders")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="theOrder", cascade={"persist"})
      */
-    private $paymentResult;
+    private $orderItems;
+
+    
 
     
 
     public function __construct()
     {
+        $this->shippingAddress = new ArrayCollection();
         $this->orderItems = new ArrayCollection();
+        
     }
 
     // END GEDMO
@@ -256,7 +286,7 @@ class Order
         return $this->itemsPrice;
     }
 
-    public function setItemsPrice(float $itemsPrice): self
+    public function setItemsPrice(?float $itemsPrice): self
     {
         $this->itemsPrice = $itemsPrice;
 
@@ -347,44 +377,9 @@ class Order
         return $this;
     }
 
-    public function getShippingAddress(): ?ShippingAddress
-    {
-        return $this->shippingAddress;
-    }
+    
 
-    public function setShippingAddress(?ShippingAddress $shippingAddress): self
-    {
-        $this->shippingAddress = $shippingAddress;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Product[]
-     */
-    public function getOrderItems(): Collection
-    {
-        return $this->orderItems;
-    }
-
-    public function addOrderItem(Product $orderItem): self
-    {
-        if (!$this->orderItems->contains($orderItem)) {
-            $this->orderItems[] = $orderItem;
-            $orderItem->addOrder($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderItem(Product $orderItem): self
-    {
-        $this->orderItems->removeElement($orderItem);
-        $orderItem->removeOrder($this);
-
-        return $this;
-    }
-
+    
     public function getPaymentResult(): ?PaymentResult
     {
         return $this->paymentResult;
@@ -393,6 +388,68 @@ class Order
     public function setPaymentResult(?PaymentResult $paymentResult): self
     {
         $this->paymentResult = $paymentResult;
+
+        return $this;
+    }
+
+    
+
+    /**
+     * @return Collection|OrderItem[]
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItem $orderItem): self
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems[] = $orderItem;
+            $orderItem->setTheOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItem $orderItem): self
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getTheOrder() === $this) {
+                $orderItem->setTheOrder(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ShippingAddress[]
+     */
+    public function getShippingAddress(): Collection
+    {
+        return $this->shippingAddress;
+    }
+
+    public function addShippingAddress(ShippingAddress $shippingAddres): self
+    {
+        if (!$this->shippingAddress->contains($shippingAddres)) {
+            $this->shippingAddress[] = $shippingAddres;
+            $shippingAddres->setTheOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShippingAddress(ShippingAddress $shippingAddres): self
+    {
+        if ($this->shippingAddress->removeElement($shippingAddres)) {
+            // set the owning side to null (unless already changed)
+            if ($shippingAddres->getTheOrder() === $this) {
+                $shippingAddres->setTheOrder(null);
+            }
+        }
 
         return $this;
     }

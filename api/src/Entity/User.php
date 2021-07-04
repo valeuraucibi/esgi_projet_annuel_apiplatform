@@ -53,6 +53,9 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @Groups({
+     *     "user_write", "user_read"
+     * })
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -212,6 +215,24 @@ class User implements UserInterface
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
+    /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
+     * @ORM\Column(type="float", nullable=true, options={"default" : 0})
+     */
+    private $rating;
+
+    /**
+     * @Groups({
+     *     "user_read", "product_read" ,"comment_read", "bookmark_read", "message_read", "order_read", "product_subresource", "comment_subresource",
+     *     "user_write",
+     * })
+     * @ORM\Column(type="float", nullable=true, options={"default" : 0})
+     */
+    private $numReviews;
 
 
     // END GEDMO
@@ -592,6 +613,30 @@ class User implements UserInterface
     public function setAccountStatus(string $accountStatus): self
     {
         $this->accountStatus = $accountStatus;
+
+        return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?float $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getNumReviews(): ?float
+    {
+        return $this->numReviews;
+    }
+
+    public function setNumReviews(?float $numReviews): self
+    {
+        $this->numReviews = $numReviews;
 
         return $this;
     }
