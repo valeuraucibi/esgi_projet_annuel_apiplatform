@@ -619,7 +619,16 @@ class User implements UserInterface
 
     public function getRating(): ?float
     {
-        return $this->rating;
+        //return $this->rating;
+        // Calculer la somme des notations
+        $sum = array_reduce($this->products->toArray(), function($total, $product) {
+            return $total + $product->getRating();
+        }, 0);
+
+        // Faire la division pour avoir la moyenne
+        if(count($this->products) > 0) return $sum / count($this->products);
+
+        return 0; 
     }
 
     public function setRating(?float $rating): self
@@ -631,7 +640,13 @@ class User implements UserInterface
 
     public function getNumReviews(): ?float
     {
-        return $this->numReviews;
+       // return $this->numReviews;
+       $sum = array_reduce($this->products->toArray(), function($total, $product) {
+        return $total + $product->getNumReviews();
+        }, 0);
+        if(count($this->products) > 0) return $sum;
+
+        return 0;
     }
 
     public function setNumReviews(?float $numReviews): self
