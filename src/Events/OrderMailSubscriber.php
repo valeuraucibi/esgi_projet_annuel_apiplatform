@@ -69,7 +69,7 @@ final class OrderMailSubscriber implements EventSubscriberInterface
                     $order->getCustomer()->getfirstName()." " .$order->getCustomer()->getlastName() .
                     ",</p> <p>Nous avons terminé le traitement de votre commande</p> <h2>[Commande ".$order->getId()." ] ".
                     $order->getCreatedAt()->format('Y-m-d').
-                    "</h2> <table> <thead> <tr> <td><strong>Product</strong></td> <td><strong>Quantité</strong></td> <td> <strong align='right'>Prix</strong> </td> </thead> <tbody>". 
+                    "</h2> <table> <thead> <tr> <td><strong>Produit</strong></td> <td><strong>Quantité</strong></td> <td> <strong align='right'>Prix</strong> </td> </thead> <tbody>". 
                     $orders."</tbody> <tfoot> <tr> <td colspan='2'>Sous total :</td> <td align='right'>".$order->getItemsPrice().
                     "<tr> <td colspan='2'>TVA:</td><td align='right'>".$order->getTaxPrice().
                     "</td> </tr> <tr> <td colspan='2'>Prix de l'expédition:</td> <td align='right'>".
