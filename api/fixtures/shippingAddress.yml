@@ -1,0 +1,10 @@
+App\Entity\ShippingAddress:
+    shippingAddress{1..9}:
+        fullName: <nameRandom()>
+        address: <nameRandom()>
+        city: <nameRandom()>
+        postalCode: <nameRandom()>
+        country: <nameRandom()>
+        theOrder: '@order<numberBetween(1, 10)>'
+        lat: <mt_rand(1, 5)>
+        lng: <mt_rand(1, 5)>

@@ -41,3 +41,10 @@ services:
                 event: lexik_jwt_authentication.on_jwt_created,
                 method: updateJwtData,
                 }
+    App\Faker\Provider\HashPasswordProvider:
+        tags: [ { name: nelmio_alice.faker.provider } ]
+        
+    App\Faker\Provider\CategoryRandom: ~
+
+    App\Tests\Manager\FixturesManager:
+        tags: [ { name: fidry_alice_data_fixtures.processor } ]

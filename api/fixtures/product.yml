@@ -1,0 +1,11 @@
+App\Entity\Product:
+  product{1..20}:
+    name: <name()>
+    category: '@category*'
+    price: <mt_rand(40, 200)>
+    description: <paragraph(3)>
+    countInStock: <mt_rand(0, 15)>
+    comments: ["@comment*"]
+    userId: "@userSeller<numberBetween(1, 20)>"
+    image: <imageUrl()>
+    

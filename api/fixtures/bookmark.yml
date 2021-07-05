@@ -1,0 +1,4 @@
+App\Entity\Bookmark:
+    bookmark{1..10}:
+        userId: '@user<numberBetween(1, 20)>'
+        product: '@product<numberBetween(1, 10)>'
