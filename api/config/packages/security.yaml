@@ -48,11 +48,11 @@ security:
                     - lexik_jwt_authentication.jwt_token_authenticator
 
     access_control:
-        - { path: ^/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY #IS_AUTHENTICATED_FULLY,
+        - { path: ^/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY #IS_AUTHENTICATED_FULLY, 
             #methods: [POST, PUT, DELETE, ]
           } # Allows accessing the Swagger UI
         - { path: ^/authentication_token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/products, roles: IS_AUTHENTICATED_FULLY,
             #methods: [POST, PUT, DELETE ]
@@ -65,6 +65,8 @@ security:
         - { path: ^/comments, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/messages, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/bookmarks, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/order_items, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/payment_results, roles: IS_AUTHENTICATED_FULLY }
         - {
             path: ^/users, #roles: IS_AUTHENTICATED_ANONYMOUSLY
             roles: IS_AUTHENTICATED_FULLY,
