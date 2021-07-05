@@ -65,23 +65,23 @@ final class OrderMailSubscriber implements EventSubscriberInterface
                     ->subject('Facture')
                     ->priority(Email::PRIORITY_HIGH)
                     //->setBody(sprintf('The book #%d has been added.', $book->getId()));
-                    ->html(  "<h1>Thanks for shopping with us</h1> <p> Hi ".
+                    ->html(  "<h1>Merci d'avoir acheté chez nous.</h1> <p> Salut ".
                     $order->getCustomer()->getfirstName()." " .$order->getCustomer()->getlastName() .
-                    ",</p> <p>We have finished processing your order.</p> <h2>[Order ".$order->getId()."] ".
+                    ",</p> <p>Nous avons terminé le traitement de votre commande</p> <h2>[Commande ".$order->getId()." ] ".
                     $order->getCreatedAt()->format('Y-m-d').
-                    "</h2> <table> <thead> <tr> <td><strong>Product</strong></td> <td><strong>Quantity</strong></td> <td> <strong align='right'>Price</strong> </td> </thead> <tbody>". 
-                    $orders."</tbody> <tfoot> <tr> <td colspan='2'>Items Price:</td> <td align='right'>".$order->getItemsPrice().
-                    "<tr> <td colspan='2'>Tax Price:</td><td align='right'>".$order->getTaxPrice().
-                    "</td> </tr> <tr> <td colspan='2'>Shipping Price:</td> <td align='right'>".
+                    "</h2> <table> <thead> <tr> <td><strong>Produit</strong></td> <td><strong>Quantité</strong></td> <td> <strong align='right'>Prix</strong> </td> </thead> <tbody>". 
+                    $orders."</tbody> <tfoot> <tr> <td colspan='2'>Sous total :</td> <td align='right'>".$order->getItemsPrice().
+                    "<tr> <td colspan='2'>TVA:</td><td align='right'>".$order->getTaxPrice().
+                    "</td> </tr> <tr> <td colspan='2'>Prix de l'expédition:</td> <td align='right'>".
                     $order->getShippingPrice().
-                    "</td> </tr> <tr> <td colspan='2'><strong>Total Price:</strong></td> <td align='right'><strong>".
+                    "</td> </tr> <tr> <td colspan='2'><strong>Total:</strong></td> <td align='right'><strong>".
                     $order->getTotalPrice().
-                    "</strong></td></tr> <tr><td colspan='2'>Payment Method:</td><td align='right'>"
+                    "</strong></td></tr> <tr><td colspan='2'>Mode de paiement:</td><td align='right'>"
                     .$order->getPaymentMethod().
                     "</td></tr></table>".
-                    " <h2>Shipping address</h2>".
+                    " <h2>Adresse de livraison</h2>".
                     $shippingAddresses.
-                    "<br/> </p> <hr/> <p>Thanks for shopping with us.</p>")
+                    "<br/> </p> <hr/> <p>Merci d'avoir acheté chez nous.</p>")
     
                     //->setBody(sprintf('The order #%d has been added.', $order->getId()))
                     //->htmlTemplate("emails/orderMail.html.twig")

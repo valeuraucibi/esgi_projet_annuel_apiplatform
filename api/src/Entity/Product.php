@@ -176,6 +176,22 @@ class Product
         $this->productOrderItems = new ArrayCollection();
     }
 
+    /**
+     * Permet d'obtenir la moyenne globale des notes pour cet produit
+     * @return float
+     */
+    public function getAvgRatings() {
+        // Calculer la somme des notations
+        $sum = array_reduce($this->comments->toArray(), function($total, $comment) {
+            return $total + $comment->getRating();
+        }, 0);
+
+        // Faire la division pour avoir la moyenne
+        if(count($this->comments) > 0) return $sum / count($this->comments);
+
+        return 0; 
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -365,7 +381,16 @@ class Product
 
     public function getRating(): ?float
     {
-        return $this->rating;
+        //return $this->rating;
+        // Calculer la somme des notations
+        $sum = array_reduce($this->comments->toArray(), function($total, $comment) {
+            return $total + $comment->getRating();
+        }, 0);
+
+        // Faire la division pour avoir la moyenne
+        if(count($this->comments) > 0) return $sum / count($this->comments);
+
+        return 0; 
     }
 
     public function setRating(?float $rating): self
@@ -377,7 +402,8 @@ class Product
 
     public function getNumReviews(): ?float
     {
-        return $this->numReviews;
+        //return $this->numReviews;
+        return count($this->comments);
     }
 
     public function setNumReviews(?float $numReviews): self
