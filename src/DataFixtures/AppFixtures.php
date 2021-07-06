@@ -141,6 +141,7 @@ class AppFixtures extends Fixture
             $categories[]= $category;
         }
 
+        
         // Nous gérons shipping address
         $shippingAddresses = [];
         for($i=1; $i<=10; $i++){
