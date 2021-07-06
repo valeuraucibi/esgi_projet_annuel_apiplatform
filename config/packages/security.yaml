@@ -52,7 +52,7 @@ security:
             #methods: [POST, PUT, DELETE, ]
           } # Allows accessing the Swagger UI
         - { path: ^/authentication_token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/products, roles: IS_AUTHENTICATED_FULLY,
             methods: [POST, PUT, DELETE ]
